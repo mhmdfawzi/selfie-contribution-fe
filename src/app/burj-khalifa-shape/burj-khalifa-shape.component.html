@@ -1,0 +1,18 @@
+<div
+  class="collage-container"
+  [ngStyle]="{
+    'grid-template-columns': 'repeat(' + gridColumns + ', ' + tileSize + 'px)'
+  }"
+>
+  <div
+    *ngFor="let tile of grid; let i = index"
+    [ngStyle]="{
+      'width.px': tileSize,
+      'height.px': tileSize,
+      'background-image': tile.visible ? 'url(' + tile.image + ')' : 'none',
+      'background-color': tile.visible ? 'transparent' : 'white',
+    }"
+    class="collage-tile"
+    [ngClass]="{ captured: tile.visible }"
+  ></div>
+</div>

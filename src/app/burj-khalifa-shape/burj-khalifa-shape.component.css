@@ -1,0 +1,14 @@
+.collage-container {
+  display: grid;
+  gap: 1px;
+  justify-content: center;
+}
+.collage-tile {
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+
+.collage-tile.captured:hover {
+  transform: scale(10);
+}

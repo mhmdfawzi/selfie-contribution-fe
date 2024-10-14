@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.upload-container, .collage-container {
+  padding: 20px;
+}
+
+.upload-container input {
+  margin-right: 10px;
+}
+
+.collage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.collage img {
+  width: 200px; /* Adjust based on your layout */
+  height: auto;
+}

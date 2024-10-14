@@ -1,14 +1,12 @@
+// src/app/app.component.ts
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { CollageComponent } from './collage/collage.component'; // Import the routing module
+import { BurjKhalifaShapeComponent } from './burj-khalifa-shape/burj-khalifa-shape.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [CollageComponent, BurjKhalifaShapeComponent], // Add the routing module here
 })
-export class AppComponent {
-  title = 'selfie-contribution-fe';
-}
+export class AppComponent {}
