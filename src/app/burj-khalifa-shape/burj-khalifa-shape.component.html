@@ -9,10 +9,19 @@
     [ngStyle]="{
       'width.px': tileSize,
       'height.px': tileSize,
-      'background-image': tile.visible ? 'url(' + tile.image + ')' : 'none',
-      'background-color': tile.visible ? 'transparent' : 'white',
+      'background-image': tile.image ? 'url(' + tile.image + ')' : '',
+      'background-color': tile.image ? 'transparent' : defaultTileColor,
     }"
     class="collage-tile"
     [ngClass]="{ captured: tile.visible }"
   ></div>
 </div>
+
+<!-- <div
+  *ngFor="let tile of grid; let i = index"
+  [style.width.px]="tileSize"
+  [style.height.px]="tileSize"
+  [style.backgroundColor]="tile.image ? 'transparent' : defaultTileColor"
+  [style.backgroundImage]="tile.image ? 'url(' + tile.image + ')' : ''"
+  class="tile"
+></div> -->

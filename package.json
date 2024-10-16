@@ -25,6 +25,7 @@
     "socket.io": "^4.8.0",
     "three": "^0.169.0",
     "tslib": "^2.3.0",
+    "unsplash-js": "^7.0.19",
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
