@@ -10,7 +10,7 @@
       'width.px': tileSize,
       'height.px': tileSize,
       'background-image': tile.image ? 'url(' + tile.image + ')' : '',
-      'background-color': tile.image ? 'transparent' : defaultTileColor,
+      'background-color': tile.image ? 'transparent' : tile.block,
     }"
     class="collage-tile"
     [ngClass]="{ captured: tile.visible }"

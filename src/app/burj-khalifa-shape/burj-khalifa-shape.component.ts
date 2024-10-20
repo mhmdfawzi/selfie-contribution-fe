@@ -80,6 +80,7 @@ import { Component, Input, OnInit } from '@angular/core';
 interface Tile {
   visible: boolean;
   image?: string; // Optional image property
+  block: string;
 }
 
 @Component({
@@ -99,6 +100,7 @@ export class BurjKhalifaShapeComponent implements OnInit {
   gridColumns: number = 0;
   gridRows: number = 0;
   tileSize: number = 0; // Dynamically calculated tile size
+  greyColor: string = '#F2F2F2';
 
   ngOnInit(): void {
     this.generateGridFromImage();
@@ -146,7 +148,10 @@ export class BurjKhalifaShapeComponent implements OnInit {
             const alpha = pixelData[index + 3]; // Alpha channel
 
             const visible = alpha > 128; // If alpha is high enough, the pixel is part of the shape
-            const tile: Tile = { visible: visible };
+            const tile: Tile = {
+              visible: visible,
+              block: visible ? this.greyColor : '',
+            };
 
             if (visible) {
               visibleTiles.push(tile);
