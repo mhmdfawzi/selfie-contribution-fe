@@ -1,7 +1,8 @@
 <div
   class="collage-container"
   [ngStyle]="{
-    'grid-template-columns': 'repeat(' + gridColumns + ', ' + tileSize + 'px)'
+    'grid-template-columns': 'repeat(' + gridColumns + ', ' + tileSize + 'px)',
+    position: 'relative'
   }"
 >
   <div
@@ -10,18 +11,11 @@
       'width.px': tileSize,
       'height.px': tileSize,
       'background-image': tile.image ? 'url(' + tile.image + ')' : '',
-      'background-color': tile.image ? 'transparent' : tile.block,
+      'background-color': tile.image ? 'transparent' : tile.block
     }"
     class="collage-tile"
     [ngClass]="{ captured: tile.visible }"
   ></div>
 </div>
 
-<!-- <div
-  *ngFor="let tile of grid; let i = index"
-  [style.width.px]="tileSize"
-  [style.height.px]="tileSize"
-  [style.backgroundColor]="tile.image ? 'transparent' : defaultTileColor"
-  [style.backgroundImage]="tile.image ? 'url(' + tile.image + ')' : ''"
-  class="tile"
-></div> -->
+<!-- <button (click)="animateNextTile()">Animate Next Tile</button> -->
