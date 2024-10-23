@@ -3,12 +3,14 @@
   gap: 1px;
   justify-content: center;
 }
+
 .collage-tile {
   background-size: cover;
   background-position: center;
   cursor: pointer;
+  transition: transform 0.3s ease; /* For hover effect */
 }
 
 .collage-tile.captured:hover {
-  transform: scale(15);
+  transform: scale(1.15); /* Slight scale on hover */
 }

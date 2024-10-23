@@ -19,13 +19,8 @@ export class CollageComponent implements OnInit {
   constructor(private imageService: ImageService) {}
   ngOnInit(): void {
     this.selfieURLs = Array(1000).fill('assets/selfie.jpg');
-    this.tilesCount = 30000;
+    this.tilesCount = 1000;
 
-    // this.imageService.getUsplashImages().then((res) => {
-    //   console.log(res.response.results);
-    //   res.response.results.forEach((item: any) => {
-    //     console.log(item.urls.full);
-    //   });
-    // });
+
   }
 }
