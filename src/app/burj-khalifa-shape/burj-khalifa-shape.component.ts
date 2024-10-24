@@ -1,80 +1,5 @@
-// import { CommonModule } from '@angular/common';
-// import { Component, Input } from '@angular/core';
-
-// // Define the Tile interface
-// interface Tile {
-//   visible: boolean;
-//   image?: string; // Optional image property
-// }
-
-// @Component({
-//   selector: 'app-burj-khalifa-shape',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './burj-khalifa-shape.component.html',
-//   styleUrl: './burj-khalifa-shape.component.css',
-// })
-// export class BurjKhalifaShapeComponent {
-//   @Input() images: string[] = []; // User-provided images
-//   @Input() tileSize: number = 25; // Control the tile size
-//   @Input() imageUrl: string = ''; // URL of Burj Khalifa or any shape image
-
-//   grid: Tile[] = []; // Grid array containing Tile objects
-//   gridColumns: number = 0;
-//   gridRows: number = 0;
-
-//   ngOnInit(): void {
-//     this.generateGridFromImage();
-//   }
-
-//   // Generate the grid based on the input image
-//   generateGridFromImage() {
-//     const canvas = document.createElement('canvas');
-//     const context = canvas.getContext('2d');
-//     const image = new Image();
-
-//     image.src = this.imageUrl;
-//     image.crossOrigin = 'Anonymous'; // To avoid CORS issues
-//     image.onload = () => {
-//       const scaledWidth = Math.floor(image.width / this.tileSize);
-//       const scaledHeight = Math.floor(image.height / this.tileSize);
-
-//       canvas.width = scaledWidth;
-//       canvas.height = scaledHeight;
-
-//       context?.drawImage(image, 0, 0, scaledWidth, scaledHeight);
-
-//       const imageData = context?.getImageData(0, 0, scaledWidth, scaledHeight);
-//       const pixelData = imageData?.data;
-
-//       if (pixelData) {
-//         this.gridColumns = scaledWidth;
-//         this.gridRows = scaledHeight;
-
-//         let imageIndex = 0;
-//         for (let y = 0; y < scaledHeight; y++) {
-//           for (let x = 0; x < scaledWidth; x++) {
-//             const index = (y * scaledWidth + x) * 4; // RGBA data
-//             const alpha = pixelData[index + 3]; // Alpha channel
-
-//             const visible = alpha > 128; // If alpha is high enough, the pixel is part of the shape
-//             const tile: Tile = { visible: visible };
-
-//             if (visible && this.images.length > 0) {
-//               tile.image = this.images[imageIndex % this.images.length];
-//               imageIndex++;
-//             }
-
-//             this.grid.push(tile);
-//           }
-//         }
-//       }
-//     };
-//   }
-// }
-
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { gsap } from 'gsap';
 
 // Define the Tile interface
@@ -95,7 +20,7 @@ export class BurjKhalifaShapeComponent implements OnInit {
   @Input() images: string[] = []; // User-provided images
   @Input() imageUrl: string = ''; // URL of Burj Khalifa or any shape image
   @Input() tileCount: number = 100; // Total number of tiles (input)
-  @Input() defaultTileColor: string = '#fffff'; // Background color for tiles with no image
+  @Input() defaultTileColor: string = '#ffffff'; // Background color for tiles with no image
 
   grid: Tile[] = []; // Grid array containing Tile objects
   gridColumns: number = 0;
@@ -103,18 +28,123 @@ export class BurjKhalifaShapeComponent implements OnInit {
   tileSize: number = 0; // Dynamically calculated tile size
   greyColor: string = '#F2F2F2';
 
+  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef; // Reference to the file input
+
+  auto = false;
+  m = { x: 0, y: 0 };
+
   ngOnInit(): void {
     this.generateGridFromImage();
-
+    this.initializeFireworks();
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.animateTiles(this.grid.filter(tile => tile.visible));
-    }, 0);
+  initializeFireworks() {
+    const stage = document.querySelector('.stage') as SVGGElement;
+    const toggle = document.querySelector('.toggle') as SVGGElement;
+
+    window.onpointerdown = window.onpointermove = (e: PointerEvent) => {
+      this.m.x = Math.round(e.clientX);
+      this.m.y = Math.round(e.clientY);
+    };
+
+    stage.onpointerup = (e: PointerEvent) => {
+      gsap.killTweensOf(this.autoPlay);
+      gsap.killTweensOf(this.fire);
+      this.auto = true;
+      this.toggleAuto();
+      this.fire(this.m);
+    };
+
+    toggle.onpointerup = this.toggleAuto.bind(this);
   }
 
-  private generateGridFromImage() {
+  fire(m: { x: number; y: number }) {
+    const stage = document.querySelector('.stage') as SVGGElement;
+    const firework = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    const trail = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    const ring = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    const hsl = `hsl(${gsap.utils.random(0, 360, 1)}, 100%, 50%)`;
+
+    stage.appendChild(firework);
+    firework.appendChild(trail);
+    firework.appendChild(ring);
+
+    for (let i = 1; i < 5; i++) {
+      const t = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      gsap.set(t, { x: m.x, y: window.innerHeight, opacity: 0.25, attr: { 'stroke-width': i, d: `M0,0 0,${window.innerHeight}` } });
+      gsap.to(t, { y: m.y, ease: 'expo' });
+      trail.appendChild(t);
+    }
+
+    for (let i = 1; i < gsap.utils.random(6, 13, 1); i++) {
+      const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      gsap.set(c, {
+        x: m.x,
+        y: m.y,
+        attr: {
+          class: 'core',
+          r: (i / 1.5) * 18,
+          fill: 'none',
+          stroke: hsl,
+          'stroke-width': 0.25 + (9 - i),
+          'stroke-dasharray': `1 ${i / 2 * gsap.utils.random(i + 3, i + 6)}`
+        }
+      });
+      ring.appendChild(c);
+    }
+
+    gsap.timeline({
+      onComplete: () => {
+        stage.removeChild(firework); // Perform the removal, but do not return it
+      }
+    })
+      .to(trail.children, { duration: 0.2, attr: { d: 'M0,0 0,0' }, stagger: -0.08, ease: 'expo.inOut' }, 0)
+      .to(trail.children, { duration: 0.4, scale: gsap.utils.random(40, 80, 1), attr: { stroke: hsl }, stagger: -0.15, ease: 'expo' }, 0.4)
+      .to(trail.children, { duration: 0.3, opacity: 0, ease: 'power2.inOut', stagger: -0.1 }, 0.5)
+      .from(ring.children, { duration: 1, rotate: gsap.utils.random(-90, 90, 1), scale: 0, stagger: 0.05, ease: 'expo' }, 0.4)
+      .to(ring.children, { opacity: 0, stagger: 0.1, ease: 'sine.inOut' }, 0.7)
+      .to(ring.children, { duration: 1, y: '+=30', ease: 'power2.in' }, 0.7);
+  }
+
+  toggleAuto() {
+    const auto = !this.auto;
+    gsap.timeline({ defaults: { duration: 0.3, ease: 'power2.inOut' } })
+      .to('.knob', { x: auto ? 18 : 0 }, 0)
+      .to('.txt1', { opacity: auto ? 0.3 : 1 }, 0)
+      .to('.txt2', { opacity: auto ? 1 : 0.3 }, 0);
+
+    if (auto) {
+      this.autoPlay();
+    } else {
+      gsap.killTweensOf(this.autoPlay);
+      gsap.killTweensOf(this.fire);
+    }
+  }
+
+  autoPlay() {
+    for (let i = 0; i < gsap.utils.random(3, 9, 1); i++) {
+      gsap.delayedCall(i / 2, this.fire, [{ x: gsap.utils.random(99, window.innerWidth - 99, 1), y: gsap.utils.random(99, window.innerHeight - 99, 1) }]);
+    }
+
+    if (this.auto) {
+      gsap.delayedCall(3.5, this.autoPlay.bind(this));
+    } else {
+      gsap.killTweensOf(this.autoPlay);
+    }
+  }
+
+  onClick() {
+    console.log("clcik")
+  }
+
+  onClickPath() {
+    console.log("on")
+  }
+
+  
+
+  // Generate the grid based on the input image and calculated tileSize
+  generateGridFromImage() {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     const image = new Image();
@@ -131,7 +161,6 @@ export class BurjKhalifaShapeComponent implements OnInit {
 
       canvas.width = scaledWidth;
       canvas.height = scaledHeight;
-
       context?.drawImage(image, 0, 0, scaledWidth, scaledHeight);
       const imageData = context?.getImageData(0, 0, scaledWidth, scaledHeight);
       const pixelData = imageData?.data;
@@ -141,15 +170,14 @@ export class BurjKhalifaShapeComponent implements OnInit {
         this.gridRows = scaledHeight;
 
         const visibleTiles: Tile[] = [];
-        let imageIndex = 0;
 
-        // Process grid generation in batches to avoid blocking the main thread
-        const batchSize = 500; // Adjust batch size as needed
-        const processBatch = (start: number) => {
-          for (let i = start; i < Math.min(pixelData.length, start + batchSize); i += 4) {
-            const index = i / 4;
-            const alpha = pixelData[i + 3];
+        // Generate the grid based on visible pixels in the image
+        for (let y = 0; y < scaledHeight; y++) {
+          for (let x = 0; x < scaledWidth; x++) {
+            const index = (y * scaledWidth + x) * 4; // RGBA data
+            const alpha = pixelData[index + 3]; // Alpha channel
 
+            const visible = alpha > 128; // Consider it part of the shape if alpha is high enough
             const tile: Tile = {
               visible: alpha > 128,
               block: alpha > 128 ? this.greyColor : '',
@@ -161,66 +189,134 @@ export class BurjKhalifaShapeComponent implements OnInit {
 
             this.grid.push(tile);
           }
+        }
 
-          if (start + batchSize < pixelData.length) {
-            requestAnimationFrame(() => processBatch(start + batchSize));
-          } else {
-            // Continue with the animation after grid generation
-            this.assignImagesToTiles(visibleTiles); // Call the new method
-            setTimeout(() => {
-              this.animateTiles(visibleTiles);
-            }, 0);
+        // Assign images to the visible tiles from bottom to top
+        let reverseIndex = visibleTiles.length - 1;
+        for (let i = 0; i < this.images.length; i++) {
+          if (reverseIndex >= 0) {
+            visibleTiles[reverseIndex].image =
+              this.images[i % this.images.length];
+            reverseIndex--;
           }
-        };
+        }
 
-        processBatch(0);
+        setTimeout(() => {
+          this.animateTilesBack(); // Delay this until the grid is fully in place
+        }, 1); // Small delay to ensure tiles are rendered before animating
       }
     };
   }
 
-  private assignImagesToTiles(visibleTiles: Tile[]) {
-    let reverseIndex = visibleTiles.length - 1; // Start from the bottom-most visible tile
-    for (let i = 0; i < this.images.length; i++) {
-      if (reverseIndex >= 0) {
-        visibleTiles[reverseIndex].image = this.images[i % this.images.length];
-        reverseIndex--;
-      }
+  animateTilesBack() {
+    const tiles = Array.from(
+      document.querySelectorAll('.collage-tile.captured')
+    ) as HTMLElement[];
+  
+    tiles.reverse().forEach((tile: HTMLElement, index: number) => {
+      const startX =
+        Math.random() * window.innerWidth * (Math.random() > 0.5 ? -1 : 1);
+      const startY =
+        Math.random() * window.innerHeight * (Math.random() > 0.5 ? -1 : 1);
+  
+      gsap.set(tile, {
+        x: startX,
+        y: startY,
+        opacity: 0,
+        scale: 8,
+      });
+  
+      gsap.to(tile, {
+        x: 0,
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        delay: index * 0.02,
+        duration: 2,
+        ease: 'back.in',
+        onComplete: () => {
+          // Once the last tile has completed the animation, start the fireworks
+          if (index === tiles.length - 1) {
+            this.startFireworks();
+          }
+
+
+        },
+      });
+    });
+  }
+  
+  // Function to start the fireworks
+  startFireworks() {
+    this.auto = true; // Enable auto mode for continuous fireworks
+    this.autoPlay(); // Start the fireworks automatically
+  }
+  
+
+  // Called when the user clicks the "Animate Next Tile" button
+  animateNextTile() {
+    this.fileInput.nativeElement.click(); // Trigger the file input to open
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const selectedImageUrl = e.target.result;
+
+        // Find the last grey tile (without an image and is visible) starting from the bottom
+        const nextTile = [...this.grid]
+          .reverse()
+          .find((tile) => !tile.image && tile.visible);
+
+        if (nextTile) {
+          nextTile.image = selectedImageUrl;
+
+          // Animate this tile to its position
+          const tileIndex = this.grid.indexOf(nextTile);
+          const tileElement = document.querySelector(
+            `.collage-tile:nth-child(${tileIndex + 1})`
+          ) as HTMLElement;
+
+          const startX =
+            Math.random() * window.innerWidth * (Math.random() > 0.5 ? -1 : 1);
+          const startY =
+            Math.random() * window.innerHeight * (Math.random() > 0.5 ? -1 : 1);
+
+          gsap.set(tileElement, {
+            x: startX,
+            y: startY,
+            opacity: 0,
+            scale: 8,
+          });
+
+          gsap.to(tileElement, {
+            x: 0,
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 2,
+            ease: 'power2.out',
+          });
+        }
+      };
+      reader.readAsDataURL(file); // Convert the selected file to a data URL
     }
   }
 
-  private animateTiles(visibleTiles: Tile[]) {
-    visibleTiles.forEach((tile, index) => {
-      if (tile.visible) {
-        const finalX = (index % this.gridColumns) * this.tileSize; // Final X position
-        const finalY = Math.floor(index / this.gridColumns) * this.tileSize; // Final Y position
-  
-        // GSAP set initial state: start with a very large size and opacity 0
-        gsap.set(`.collage-tile:nth-child(${index + 1})`, {
-          x: finalX,
-          y: finalY + window.innerHeight, // Start from offscreen (below)
-          scale: 3, // Start from a larger size (adjust as needed)
-          opacity: 0, // Initially invisible
-        });
-  
-        // GSAP animate to the final position with shrinking effect
-        gsap.to(`.collage-tile:nth-child(${index + 1})`, {
-          duration: 1.5, // Animation duration
-          x: finalX,
-          y: finalY, // Final position in grid
-          scale: 1, // Shrink down to normal size
-          opacity: 1, // Fade in
-          ease: "power3.out", // Smooth easing
-          delay: index * 0.1, // Stagger effect (slightly delay each tile)
-        });
-      }
-    });
+
+  // Helper function to get a random color
+  getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
-  
-  trackByFn(index: number, item: Tile) {
-    return index; // Use the index as a unique identifier
+  trackByFn(index: number, item: Tile): number {
+    return index;
   }
 }
-
-
-

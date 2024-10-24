@@ -2,16 +2,55 @@
   display: grid;
   gap: 1px;
   justify-content: center;
-  position: relative; /* Ensure the container is positioned */
+  z-index: -999;
 }
 
 .collage-tile {
   background-size: cover;
   background-position: center;
   cursor: pointer;
-  transition: opacity 0.5s ease; /* Optional: Smooth transition for opacity */
+  transition: transform 0.3s ease; /* For hover effect */
 }
 
 .collage-tile.captured:hover {
-  transform: scale(15);
+  transform: scale(1.15); /* Slight scale on hover */
+}
+
+.toggle {
+  background-color: aqua;
+}
+
+.path {
+  z-index: 10000;
+  background-color: blanchedalmond;
+}
+
+.fireworks-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Prevent interaction */
+  z-index: 9999; /* On top of everything */
+  overflow: hidden; /* Prevent scrolling issues */
+}
+
+.firework {
+  position: absolute;
+  width: 10px; /* Initial small size */
+  height: 10px;
+  border-radius: 50%; /* Round shape */
+  background-color: white; /* Default */
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+}
+
+svg {
+  position: absolute;
+  width: 100%;
+  height: 1000px;
 }
