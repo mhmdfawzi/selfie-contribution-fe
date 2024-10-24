@@ -13,14 +13,12 @@ import { ImageService } from '../image.service';
 })
 export class CollageComponent implements OnInit {
   selfieURLs: string[] = [];
-  tilesCount: number = 1000;
-  collageShape: string = 'assets/burj-khalifa.png';
+  tilesCount: number = 10000;
+  collageShape: string = 'assets/burj-khalifa-800h.png';
 
   constructor(private imageService: ImageService) {}
   ngOnInit(): void {
-    this.selfieURLs = Array(1000).fill('assets/selfie.jpg');
-    this.tilesCount = 1000;
-
-
+    this.selfieURLs = Array(500).fill('assets/selfie.jpg');
+    this.tilesCount = 3000;
   }
 }
