@@ -13,7 +13,7 @@ import { ImageService } from '../image.service';
 })
 export class CollageComponent implements OnInit {
   selfieURLs: string[] = [];
-  tilesCount: number = 10000;
+  tilesCount: number = 0;
   collageShape: string = 'assets/burj-khalifa-800h.png';
 
   constructor(private imageService: ImageService) {}

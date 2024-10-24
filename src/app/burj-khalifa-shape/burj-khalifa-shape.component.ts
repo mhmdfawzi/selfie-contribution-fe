@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { gsap } from 'gsap';
 
 // Define the Tile interface
@@ -28,6 +28,8 @@ export class BurjKhalifaShapeComponent implements OnInit {
   tileSize: number = 0; // Dynamically calculated tile size
   greyColor: string = '#F2F2F2';
 
+  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef; // Reference to the file input
+
   ngOnInit(): void {
     this.generateGridFromImage();
   }
@@ -41,7 +43,6 @@ export class BurjKhalifaShapeComponent implements OnInit {
     image.src = this.imageUrl;
     image.crossOrigin = 'Anonymous'; // To avoid CORS issues
     image.onload = () => {
-      // Calculate tile size and generate the grid from the image
       const totalPixels = image.width * image.height;
       const pixelsPerTile = Math.floor(totalPixels / this.tileCount);
       this.tileSize = Math.floor(Math.sqrt(pixelsPerTile));
@@ -92,7 +93,6 @@ export class BurjKhalifaShapeComponent implements OnInit {
           }
         }
 
-        // Animate the tiles after the grid is rendered
         setTimeout(() => {
           this.animateTilesBack(); // Delay this until the grid is fully in place
         }, 1); // Small delay to ensure tiles are rendered before animating
@@ -106,30 +106,80 @@ export class BurjKhalifaShapeComponent implements OnInit {
     ); // Targeting the correct class
 
     tiles.reverse().forEach((tile: Element, index: number) => {
-      console.log(tile);
-      // Start from random positions off-screen
       const startX =
         Math.random() * window.innerWidth * (Math.random() > 0.5 ? -1 : 1);
       const startY =
         Math.random() * window.innerHeight * (Math.random() > 0.5 ? -1 : 1);
 
-      // Set initial position of each tile to be off-screen
       gsap.set(tile, {
         x: startX,
         y: startY,
-        opacity: 0, // Set opacity to 0 initially
+        opacity: 0,
+        scale: 8
       });
 
-      // Animate each tile back to its original position
       gsap.to(tile, {
-        x: 0, // Move back to the original x position
-        y: 0, // Move back to the original y position
-        opacity: 1, // Fade in the tile
-        delay: index * 0.02, // Slight stagger for each tile (to spread animation over time)
-        duration: 1, // 10-second animation
-        ease: 'back.in', // Smooth easing
-        // ease: 'power2.out', // Smooth easing
+        x: 0,
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        delay: index * 0.02,
+        duration: 2,
+        ease: 'back.in',
       });
     });
+  }
+
+  // Called when the user clicks the "Animate Next Tile" button
+  animateNextTile() {
+    this.fileInput.nativeElement.click(); // Trigger the file input to open
+  }
+
+  // Handles file selection and animates a new tile
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const selectedImageUrl = e.target.result;
+  
+        // Find the last grey tile (without an image and is visible) starting from the bottom
+        const nextTile = [...this.grid]
+          .reverse()
+          .find((tile) => !tile.image && tile.visible);
+  
+        if (nextTile) {
+          nextTile.image = selectedImageUrl;
+  
+          // Animate this tile to its position
+          const tileIndex = this.grid.indexOf(nextTile); // Get the index of the nextTile in the grid
+          const tileElement = document.querySelector(
+            `.collage-tile:nth-child(${tileIndex + 1})`
+          ) as HTMLElement;
+  
+          const startX =
+            Math.random() * window.innerWidth * (Math.random() > 0.5 ? -1 : 1);
+          const startY =
+            Math.random() * window.innerHeight * (Math.random() > 0.5 ? -1 : 1);
+  
+          gsap.set(tileElement, {
+            x: startX,
+            y: startY,
+            opacity: 0,
+            scale: 8,
+          });
+  
+          gsap.to(tileElement, {
+            x: 0,
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 2,
+            ease: 'power2.out',
+          });
+        }
+      };
+      reader.readAsDataURL(file); // Convert the selected file to a data URL
+    }
   }
 }
