@@ -135,7 +135,6 @@ export class BurjKhalifaShapeComponent implements OnInit {
     this.fileInput.nativeElement.click(); // Trigger the file input to open
   }
 
-  // Handles file selection and animates a new tile
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -176,10 +175,83 @@ export class BurjKhalifaShapeComponent implements OnInit {
             scale: 1,
             duration: 2,
             ease: 'power2.out',
+            onComplete: () => {
+              // Check if there are no more grey tiles left
+              if (!this.grid.some((tile) => !tile.image && tile.visible)) {
+                this.triggerFireworks(); // Trigger fireworks when all tiles are replaced
+              }else{
+                this.triggerFireworks(); // Trigger fireworks when all tiles are replaced
+
+              }
+            },
           });
         }
       };
       reader.readAsDataURL(file); // Convert the selected file to a data URL
     }
   }
+  
+
+  triggerFireworks() {
+    const fireworksContainer = document.createElement('div');
+
+    fireworksContainer.classList.add('fireworks-container');
+    document.body.appendChild(fireworksContainer);
+  
+    // Fireworks animation logic
+    for (let i = 0; i < 10; i++) {
+      console.log('Fireworks triggered!');
+      // document.body.style.overflow = 'hidden';
+
+      const firework = document.createElement('div');
+      firework.classList.add('firework');
+      fireworksContainer.appendChild(firework);
+  
+      const randomX = Math.random() * window.innerWidth;
+      const randomY = Math.random() * (window.innerHeight - 200) + 100; // Ensure fireworks stay within screen bounds
+      
+      
+  
+      gsap.set(firework, {
+        x: randomX,
+        y: randomY,
+        scale: 0.2, // Slightly larger to ensure visibility
+        background: this.getRandomColor(), // Random color
+        opacity: 1, // Ensure visibility
+      });
+      
+  
+      // Create the explosion effect
+      gsap.to(firework, {
+        scale: 3, // Increase scale for a bigger explosion
+        duration: 1,
+        opacity: 1, // Make sure opacity is high enough to see it
+        ease: 'power1.out',
+        onComplete: () => {
+          gsap.to(firework, {
+            scale: 5, // Further expand the firework
+            opacity: 0, // Fade out
+            duration: 2, // Shorter duration for better effect
+            ease: 'power2.in',
+            onComplete: () => {
+              firework.remove(); // Remove after animation
+            },
+          });
+        },
+      });
+      
+    }
+  }
+  
+  
+  // Helper function to get a random color
+  getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+  
 }

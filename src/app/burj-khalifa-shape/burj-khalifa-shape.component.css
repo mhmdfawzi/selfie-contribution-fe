@@ -15,3 +15,25 @@
 .collage-tile.captured:hover {
   transform: scale(1.15); /* Slight scale on hover */
 }
+
+.fireworks-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Ensure clicks go through */
+  z-index: 9999; /* Ensure fireworks are on top of everything */
+  overflow: hidden; /* Prevent scrolling issues */
+}
+
+.firework {
+  position: absolute;
+  width: 10px; /* Initial size of the firework */
+  height: 10px;
+  border-radius: 50%; /* Make it circular */
+  background-color: white; /* Default color for visibility */
+  background: 'red'; /*Change this to ensure visibility*/
+
+  opacity: 0.5; /* Start with some opacity */
+}
