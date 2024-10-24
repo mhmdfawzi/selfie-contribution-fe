@@ -2,11 +2,14 @@
   display: grid;
   gap: 1px;
   justify-content: center;
+  position: relative; /* Ensure the container is positioned */
 }
+
 .collage-tile {
   background-size: cover;
   background-position: center;
   cursor: pointer;
+  transition: opacity 0.5s ease; /* Optional: Smooth transition for opacity */
 }
 
 .collage-tile.captured:hover {

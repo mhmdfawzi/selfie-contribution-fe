@@ -5,7 +5,7 @@
   }"
 >
   <div
-    *ngFor="let tile of grid; let i = index"
+    *ngFor="let tile of grid; let i = index; trackBy: trackByFn"
     [ngStyle]="{
       'width.px': tileSize,
       'height.px': tileSize,
@@ -16,7 +16,6 @@
     [ngClass]="{ captured: tile.visible }"
   ></div>
 </div>
-
 <!-- <div
   *ngFor="let tile of grid; let i = index"
   [style.width.px]="tileSize"
