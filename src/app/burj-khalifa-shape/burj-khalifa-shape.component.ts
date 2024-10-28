@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  HostListener,
+} from '@angular/core';
 import { gsap } from 'gsap';
 
 // Define the Tile interface
@@ -35,7 +43,7 @@ export class BurjKhalifaShapeComponent implements OnInit {
 
   ngOnInit(): void {
     this.generateGridFromImage();
-    this.initializeFireworks();
+    // this.initializeFireworks();
   }
 
   initializeFireworks() {
@@ -47,20 +55,23 @@ export class BurjKhalifaShapeComponent implements OnInit {
       this.m.y = Math.round(e.clientY);
     };
 
-    stage.onpointerup = (e: PointerEvent) => {
-      gsap.killTweensOf(this.autoPlay);
-      gsap.killTweensOf(this.fire);
-      this.auto = true;
-      this.toggleAuto();
-      this.fire(this.m);
-    };
+    // stage.onpointerup = (e: PointerEvent) => {
+    //   gsap.killTweensOf(this.autoPlay);
+    //   gsap.killTweensOf(this.fire);
+    //   this.auto = true;
+    //   this.toggleAuto();
+    //   this.fire(this.m);
+    // };
 
-    toggle.onpointerup = this.toggleAuto.bind(this);
+    // toggle.onpointerup = this.toggleAuto.bind(this);
   }
 
   fire(m: { x: number; y: number }) {
     const stage = document.querySelector('.stage') as SVGGElement;
-    const firework = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    const firework = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'g'
+    );
     const trail = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     const ring = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     const hsl = `hsl(${gsap.utils.random(0, 360, 1)}, 100%, 50%)`;
@@ -71,13 +82,21 @@ export class BurjKhalifaShapeComponent implements OnInit {
 
     for (let i = 1; i < 5; i++) {
       const t = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      gsap.set(t, { x: m.x, y: window.innerHeight, opacity: 0.25, attr: { 'stroke-width': i, d: `M0,0 0,${window.innerHeight}` } });
+      gsap.set(t, {
+        x: m.x,
+        y: window.innerHeight,
+        opacity: 0.25,
+        attr: { 'stroke-width': i, d: `M0,0 0,${window.innerHeight}` },
+      });
       gsap.to(t, { y: m.y, ease: 'expo' });
       trail.appendChild(t);
     }
 
     for (let i = 1; i < gsap.utils.random(6, 13, 1); i++) {
-      const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      const c = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'circle'
+      );
       gsap.set(c, {
         x: m.x,
         y: m.y,
@@ -87,28 +106,63 @@ export class BurjKhalifaShapeComponent implements OnInit {
           fill: 'none',
           stroke: hsl,
           'stroke-width': 0.25 + (9 - i),
-          'stroke-dasharray': `1 ${i / 2 * gsap.utils.random(i + 3, i + 6)}`
-        }
+          'stroke-dasharray': `1 ${(i / 2) * gsap.utils.random(i + 3, i + 6)}`,
+        },
       });
       ring.appendChild(c);
     }
 
-    gsap.timeline({
-      onComplete: () => {
-        stage.removeChild(firework); // Perform the removal, but do not return it
-      }
-    })
-      .to(trail.children, { duration: 0.2, attr: { d: 'M0,0 0,0' }, stagger: -0.08, ease: 'expo.inOut' }, 0)
-      .to(trail.children, { duration: 0.4, scale: gsap.utils.random(40, 80, 1), attr: { stroke: hsl }, stagger: -0.15, ease: 'expo' }, 0.4)
-      .to(trail.children, { duration: 0.3, opacity: 0, ease: 'power2.inOut', stagger: -0.1 }, 0.5)
-      .from(ring.children, { duration: 1, rotate: gsap.utils.random(-90, 90, 1), scale: 0, stagger: 0.05, ease: 'expo' }, 0.4)
+    gsap
+      .timeline({
+        onComplete: () => {
+          stage.removeChild(firework); // Perform the removal, but do not return it
+        },
+      })
+      .to(
+        trail.children,
+        {
+          duration: 0.2,
+          attr: { d: 'M0,0 0,0' },
+          stagger: -0.08,
+          ease: 'expo.inOut',
+        },
+        0
+      )
+      .to(
+        trail.children,
+        {
+          duration: 0.4,
+          scale: gsap.utils.random(40, 80, 1),
+          attr: { stroke: hsl },
+          stagger: -0.15,
+          ease: 'expo',
+        },
+        0.4
+      )
+      .to(
+        trail.children,
+        { duration: 0.3, opacity: 0, ease: 'power2.inOut', stagger: -0.1 },
+        0.5
+      )
+      .from(
+        ring.children,
+        {
+          duration: 1,
+          rotate: gsap.utils.random(-90, 90, 1),
+          scale: 0,
+          stagger: 0.05,
+          ease: 'expo',
+        },
+        0.4
+      )
       .to(ring.children, { opacity: 0, stagger: 0.1, ease: 'sine.inOut' }, 0.7)
       .to(ring.children, { duration: 1, y: '+=30', ease: 'power2.in' }, 0.7);
   }
 
   toggleAuto() {
     const auto = !this.auto;
-    gsap.timeline({ defaults: { duration: 0.3, ease: 'power2.inOut' } })
+    gsap
+      .timeline({ defaults: { duration: 0.3, ease: 'power2.inOut' } })
       .to('.knob', { x: auto ? 18 : 0 }, 0)
       .to('.txt1', { opacity: auto ? 0.3 : 1 }, 0)
       .to('.txt2', { opacity: auto ? 1 : 0.3 }, 0);
@@ -123,7 +177,12 @@ export class BurjKhalifaShapeComponent implements OnInit {
 
   autoPlay() {
     for (let i = 0; i < gsap.utils.random(3, 9, 1); i++) {
-      gsap.delayedCall(i / 2, this.fire, [{ x: gsap.utils.random(99, window.innerWidth - 99, 1), y: gsap.utils.random(99, window.innerHeight - 99, 1) }]);
+      gsap.delayedCall(i / 2, this.fire, [
+        {
+          x: gsap.utils.random(99, window.innerWidth - 99, 1),
+          y: gsap.utils.random(99, window.innerHeight - 99, 1),
+        },
+      ]);
     }
 
     if (this.auto) {
@@ -131,17 +190,19 @@ export class BurjKhalifaShapeComponent implements OnInit {
     } else {
       gsap.killTweensOf(this.autoPlay);
     }
+
+    setTimeout(() => {
+      this.flipImage();
+    }, 3000); // 2000 milliseconds = 2 seconds
   }
 
   onClick() {
-    console.log("clcik")
+    console.log('clcik');
   }
 
   onClickPath() {
-    console.log("on")
+    console.log('on');
   }
-
-  
 
   // Generate the grid based on the input image and calculated tileSize
   generateGridFromImage() {
@@ -212,20 +273,20 @@ export class BurjKhalifaShapeComponent implements OnInit {
     const tiles = Array.from(
       document.querySelectorAll('.collage-tile.captured')
     ) as HTMLElement[];
-  
+
     tiles.reverse().forEach((tile: HTMLElement, index: number) => {
       const startX =
         Math.random() * window.innerWidth * (Math.random() > 0.5 ? -1 : 1);
       const startY =
         Math.random() * window.innerHeight * (Math.random() > 0.5 ? -1 : 1);
-  
+
       gsap.set(tile, {
         x: startX,
         y: startY,
         opacity: 0,
-        scale: 8,
+        scale: 12,
       });
-  
+
       gsap.to(tile, {
         x: 0,
         y: 0,
@@ -237,24 +298,22 @@ export class BurjKhalifaShapeComponent implements OnInit {
         onComplete: () => {
           // Once the last tile has completed the animation, start the fireworks
           if (index === tiles.length - 1) {
-            this.startFireworks();
+            // this.startFireworks();
           }
-
-
         },
       });
     });
   }
-  
+
   // Function to start the fireworks
   startFireworks() {
-    this.auto = true; // Enable auto mode for continuous fireworks
+    this.auto = false; // Enable auto mode for continuous fireworks
     this.autoPlay(); // Start the fireworks automatically
   }
-  
 
   // Called when the user clicks the "Animate Next Tile" button
   animateNextTile() {
+    // this.flipImage();
     this.fileInput.nativeElement.click(); // Trigger the file input to open
   }
 
@@ -288,7 +347,7 @@ export class BurjKhalifaShapeComponent implements OnInit {
             x: startX,
             y: startY,
             opacity: 0,
-            scale: 8,
+            scale: 18,
           });
 
           gsap.to(tileElement, {
@@ -305,7 +364,6 @@ export class BurjKhalifaShapeComponent implements OnInit {
     }
   }
 
-
   // Helper function to get a random color
   getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -318,5 +376,16 @@ export class BurjKhalifaShapeComponent implements OnInit {
 
   trackByFn(index: number, item: Tile): number {
     return index;
+  }
+  @ViewChild('flipper') flipper!: ElementRef;
+  @ViewChild('frontImage') frontImage!: ElementRef;
+  @ViewChild('backImage') backImage!: ElementRef;
+
+  flipImage() {
+    gsap.to(this.flipper.nativeElement, {
+      duration: 0.6,
+      rotateY: 180,
+      ease: 'power2.inOut',
+    });
   }
 }

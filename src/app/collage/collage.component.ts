@@ -3,13 +3,20 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BurjKhalifaShapeComponent } from '../burj-khalifa-shape/burj-khalifa-shape.component';
 import { ImageService } from '../image.service';
+import { DubaiPoliceComponent } from '../dubai-police/dubai-police.component';
+import { AlphaMaskComponent } from '../alpha-mask/alpha-mask.component';
 
 @Component({
   selector: 'app-collage',
   templateUrl: './collage.component.html',
   styleUrls: ['./collage.component.css'],
   standalone: true,
-  imports: [CommonModule, BurjKhalifaShapeComponent],
+  imports: [
+    CommonModule,
+    BurjKhalifaShapeComponent,
+    DubaiPoliceComponent,
+    AlphaMaskComponent,
+  ],
 })
 export class CollageComponent implements OnInit {
   selfieURLs: string[] = [];
