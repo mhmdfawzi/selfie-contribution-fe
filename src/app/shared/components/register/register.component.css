@@ -1,0 +1,116 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  margin: auto;
+  max-width: 100%;
+  padding: 20px;
+  min-height: 100vh; /* Ensure the container takes the full height of the viewport */
+}
+
+form {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+
+.fill-inputs {
+    margin: 10px;
+    width: 100%;
+
+}
+
+
+
+.input-with-select {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  select {
+    border: none;
+    background-color: transparent;
+    padding: 5px;
+    font-size: 14px;
+    outline: none;
+    appearance: none; /* Remove default arrow for better styling */
+  }
+  
+
+  
+  input {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 4px;
+    border-color: #00000021;
+    padding: 10px;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  
+  .input-with-select select,
+  .input-with-select input {
+    width: 400px;
+    padding-left: 10px; /* Adjust padding for spacing */
+  }
+  
+  .input-with-select:focus-within {
+    border-color: #007bff; /* Change border color on focus */
+  }
+  
+
+
+
+.register-button {
+    width: 100%;
+    max-width: 315px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: rgb(230, 96, 0);
+    color: white;
+    border: none;
+    margin: 30px;
+    margin-top: 60px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+@media (min-width: 200px) and (max-width: 1090px) {
+  .container {
+      max-width: 100%; /* Keep full width */
+      padding: 10px; /* Reduce padding */
+  }
+
+  .input-with-select {
+      flex-direction: column; /* Stack the select and input vertically */
+  }
+
+  select {
+      width: 100%; /* Full width for the select */
+  }
+
+  input {
+      width: 93%; /* Full width for the input */
+  }
+
+
+  .register-button {
+    width: 83%;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: rgb(230, 96, 0);
+    color: white;
+    border: none;
+    margin: 30px;
+    margin-top: 60px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+}
+}

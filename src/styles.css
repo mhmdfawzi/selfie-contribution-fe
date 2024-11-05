@@ -1,3 +1,7 @@
+@import "remixicon/fonts/remixicon.css";
+@import 'intl-tel-input/build/css/intlTelInput.css';
+
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;

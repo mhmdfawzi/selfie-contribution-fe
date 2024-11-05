@@ -1,0 +1,51 @@
+<div class="container">
+
+    <div class="header">
+        <i class="ri-order-play-line"></i>
+        <p>My libary</p>
+        <i class="ri-search-2-line"></i>
+    </div>
+
+    <div class="tabs">
+        <button
+          class="tab-button"
+          [ngClass]="{ 'active-tab': selectedTab === 'tab1', 'inactive-tab': selectedTab !== 'tab1' }"
+          (click)="selectTab('tab1')"
+        >
+          My Album
+        </button>
+        <button
+          class="tab-button"
+          [ngClass]="{ 'active-tab': selectedTab === 'tab2', 'inactive-tab': selectedTab !== 'tab2' }"
+          (click)="selectTab('tab2')"
+        >
+          Recent
+        </button>
+      </div>
+      
+      <div class="tab-content">
+        <div class="tab1" *ngIf="selectedTab === 'tab1'">
+            <img src="assets/cover.png">
+            <img src="assets/cover.png">
+        </div>
+      
+        <div *ngIf="selectedTab === 'tab2'">
+            <img src="assets/cover.png">
+            <img src="assets/cover.png">
+            <img src="assets/cover.png">
+            <img src="assets/cover.png">
+            <img src="assets/cover.png">
+            <img src="assets/cover.png">
+
+        </div>
+      </div>
+      
+
+      <div class="footer">
+        <i class="ri-home-5-line" (click)="setActiveIcon(0)" [class.active]="activeIcon === 0"></i>
+        <i class="ri-camera-fill" (click)="setActiveIcon(1)" [class.active]="activeIcon === 1"></i>
+        <button><i class="ri-add-line"></i></button>
+        <i class="ri-settings-3-line" (click)="setActiveIcon(2)" [class.active]="activeIcon === 2"></i>
+        <i class="ri-user-line" (click)="setActiveIcon(3)" [class.active]="activeIcon === 3"></i>
+      </div>
+</div>

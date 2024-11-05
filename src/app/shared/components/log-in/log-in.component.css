@@ -1,0 +1,247 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  max-width: 500px;
+}
+
+input {
+  width: 70%;
+  padding: 12px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+form {
+  width: 100%; /* Make the form take up the full width of the container */
+}
+
+a {
+  color: #f17100;
+  text-decoration: none;
+}
+
+.sign-with {
+  text-align: center;
+  font-size: 13px;
+  width: 100%;
+}
+
+.images-client {
+  max-width: 25%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  border-radius: 15%;
+}
+
+small {
+  position: relative;
+  bottom: 20px;
+  color: red;
+  font-weight: 700;
+}
+
+input, .submit {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.submit {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: rgb(230, 96, 0);
+  color: white;
+  border: none;
+  margin-top: 30px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.icons {
+  display: flex;
+  justify-content: center; /* Center the icons */
+  align-items: center;
+  gap: 10px;
+  width: auto;
+  margin: auto;
+}
+
+.email {
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px;
+  font-size: 16px; 
+  box-sizing: border-box; 
+  margin-bottom: 20px; 
+}
+
+.password-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.password-container input {
+  flex: 1;
+  padding: 12px;
+  padding-right: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.toggle-password {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  color: #999;
+  transition: color 0.3s;
+}
+
+.toggle-password:hover {
+  color: #f17100;
+}
+
+.input-field {
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid #ccc;
+  border-radius: 4px; 
+  font-size: 16px;
+  box-sizing: border-box; 
+  margin-bottom: 20px;
+}
+
+
+
+@media (min-width: 200px) and (max-width: 1090px) {
+  .container {
+    max-width: 100%; 
+    padding: 20px;
+  }
+
+  .images-client {
+    border-bottom-right-radius: 20em 13em;
+    border-bottom-left-radius: 20em 13em;
+    max-width: 100%;
+  }
+
+  .email {
+    width: 90%; 
+    font-size: 15px; 
+    padding: 10px; 
+    border: 1px solid #00000082;
+    border-radius: 5px;
+    margin-bottom: 15px; 
+  }
+
+  .input-field {
+    font-size: 15px; 
+    padding: 10px; 
+    margin-bottom: 15px;
+  }
+
+  .icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+    width: 85%;
+    max-width: 50%;
+    margin: auto;
+  }
+
+  .icons img {
+    width: 40px; 
+    height: 40px; 
+  }
+
+  .sign-with {
+    font-size: 14px; 
+    text-align: center; 
+  }
+
+  p {
+    font-size: 16px; 
+    text-align: center; 
+  }
+
+  .submit {
+    width: 100%;
+    font-size: 18px; 
+  }
+
+  .sign-with {
+    font-size: 14px; 
+    margin: auto;
+    margin-bottom: 15px;
+  }
+
+  form {
+    padding: 0px;
+  }
+
+  .password-container {
+    margin-bottom: 15px;
+  }
+
+  .password-container input {
+    padding: 10px; 
+    font-size: 15px; 
+  }
+
+  .toggle-password {
+    right: 10px; 
+    font-size: 18px;
+    margin-left: -15px;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+/* @media (max-width: 600px) {
+  .password-container {
+    width: 100%; 
+  }
+
+  .password-container input {
+    padding: 8px; 
+    font-size: 14px; 
+  }
+
+  .toggle-password {
+    font-size: 16px;
+  }
+}
+
+@media (max-height: 200px) {
+  .container {
+    height: auto; 
+  }
+}
+
+@media (min-width: 200px) and (max-width: 1090px) {
+}
+
+@media (max-width: 600px) {
+  .password-container input {
+    padding: 8px;
+    font-size: 14px; 
+  }
+
+  .toggle-password {
+    font-size: 16px;
+  }
+} */
