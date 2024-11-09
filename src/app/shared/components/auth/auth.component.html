@@ -5,7 +5,7 @@
         <p>Emter the 5-digit code we just texted to your phone number,</p>
       </div>
 
-      <div>
+      <div style="width: 100%;">
         <input
           *ngFor="let box of boxes; let i = index"
           type="text"
@@ -13,13 +13,7 @@
           id="input-{{ i }}"
           [(ngModel)]="code[i]"
           (keydown)="onInputChange(i, $event)"
-          style="
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            font-size: 20px;
-            margin: 5px;
-          "
+          class="digits"
         />
       </div>
 
