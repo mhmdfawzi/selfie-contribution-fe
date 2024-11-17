@@ -52,6 +52,10 @@ button {
   font-weight: bold;
 }
 
+.invalid-code-text{
+  color: red;
+}
+
 @media (min-width: 200px) and (max-width: 1090px) {
   .container {
     padding: 10px;

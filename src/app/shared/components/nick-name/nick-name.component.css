@@ -1,0 +1,58 @@
+.container {
+    margin: auto;
+    max-width: 500px;
+}
+
+.flex-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 96vh;
+}
+
+button {
+    margin-top: 100%;
+    width: 75%;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: rgb(230, 96, 0);
+    color: white;
+    border: none;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+button:disabled {
+    background-color: rgba(230, 96, 0, 0.37);
+}
+
+.description {
+    width: 100%;
+}
+
+.nick-name {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    width: 85%;
+    padding: 10px;
+    border-radius: 4px;
+    border-color: #00000021;
+}
+
+@media (min-width: 200px) and (max-width: 1090px) {
+    .container {
+        padding: 10px;
+    }
+
+    input{
+        width: 93%;
+        margin-top: 10px;
+    }
+
+    button{
+        width: 100%;
+    }
+}

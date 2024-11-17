@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NikeNameComponent } from './nike-name.component';
+import { NikeNameComponent } from './nick-name.component';
 
 describe('NikeNameComponent', () => {
   let component: NikeNameComponent;

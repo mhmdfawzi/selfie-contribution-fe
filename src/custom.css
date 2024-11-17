@@ -1,0 +1,11 @@
+
+.main-title{
+  font-size: 2rem;
+  font-weight: bold;
+  color: black;
+}
+
+.sub-text{
+  color: var(--grey-color);
+  font-size: var(--size-two);
+}

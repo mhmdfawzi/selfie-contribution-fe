@@ -25,8 +25,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/intl-tel-input/build/css/intlTelInput.css"
+              "node_modules/intl-tel-input/build/css/intlTelInput.css",
+              "node_modules/ngx-spinner/animations/ball-spin-clockwise.css",
+              "src/styles.css"
             ],
             "scripts": [
               "node_modules/intl-tel-input/build/js/intlTelInput.min.js"

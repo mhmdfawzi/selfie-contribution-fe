@@ -1,5 +1,7 @@
 @import "remixicon/fonts/remixicon.css";
 @import 'intl-tel-input/build/css/intlTelInput.css';
+@import 'variables.css';
+@import 'custom.css';
 
 
 body {

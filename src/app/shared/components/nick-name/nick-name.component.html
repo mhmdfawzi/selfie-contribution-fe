@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="flex-wrapper">
+    <div class="description">
+      <h1 class="main-title">Add Nickname</h1>
+      <p class="sub-text">
+        This nickname is used for interaction between you and the application and
+        for communication
+      </p>
+    </div>
+  
+    <form [formGroup]="form">
+      <div class="nick-name">
+        <label>Nick name</label>
+        <input formControlName="nickname" type="text" placeholder="EX:name" />
+      </div>
+  
+      <div>
+        <button (click)="navToBurjEvent()" [disabled]="form.invalid">Save</button>
+      </div>
+    </form>
+  </div>
+
+</div>
