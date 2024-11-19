@@ -1,68 +1,108 @@
+@if (isPhoneAccepted) {
+<div id="auth-view">
+  <app-auth [userPhoneNumber]="userPhoneNumber"></app-auth>
+</div>
+}@else {
 <div>
-  <img class="images-client" src="assets/cover.png" >
+  <img class="images-client" src="assets/cover.png" />
 </div>
 
 <div class="container">
-
-
   <div class="form">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm">
+      <!-- <div>
+          <label>Email or Phone Number</label><br>
+          <input
+            class="input-field"
+            type="text"
+            formControlName="email"
+            placeholder="Enter email or phone number"
+          />
+          <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)">
+            <small *ngIf="loginForm.get('email')?.errors?.['required']">Email or phone number is required.</small>
+            <small *ngIf="loginForm.get('email')?.errors?.['emailOrPhone']">Invalid email or phone number format.</small>
+          </div>
+        </div> -->
+
       <div>
-        <label>Email or Phone Number</label><br>
+        <label>Phone Number</label><br />
         <input
           class="input-field"
           type="text"
-          formControlName="email"
-          placeholder="Enter email or phone number"
+          formControlName="mobileNumber"
+          placeholder="phone number"
         />
-        <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)">
-          <small *ngIf="loginForm.get('email')?.errors?.['required']">Email or phone number is required.</small>
-          <small *ngIf="loginForm.get('email')?.errors?.['emailOrPhone']">Invalid email or phone number format.</small>
+        <div
+          *ngIf="
+            loginForm.get('mobileNumber')?.invalid &&
+            (loginForm.get('mobileNumber')?.touched ||
+              loginForm.get('mobileNumber')?.dirty)
+          "
+        >
+          <small *ngIf="loginForm.get('mobileNumber')?.errors?.['required']"
+            >phone number is required.</small
+          >
+          <small *ngIf="loginForm.get('mobileNumber')?.errors?.['phone']"
+            >phone number format.</small
+          >
         </div>
       </div>
-  
-      <div>
-        <label>Password</label><br>
-        <div class="password-container">
-          <input
-            class="input-field"
-            [type]="showPassword ? 'text' : 'password'"
-            formControlName="password"
-            placeholder="Password"
-          />
-          <i
-            class="toggle-password"
-            (click)="togglePasswordVisibility()"
-            [ngClass]="showPassword ? 'ri-eye-off-line' : 'ri-eye-line'"
-          ></i>
-        </div>
-        <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)">
-          <small *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</small>
-        </div>
-      </div>
-  
-      <a href="#">Forget Password</a><br>
+
+      <!-- <div>
+          <label>Password</label><br>
+          <div class="password-container">
+            <input
+              class="input-field"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Password"
+            />
+            <i
+              class="toggle-password"
+              (click)="togglePasswordVisibility()"
+              [ngClass]="showPassword ? 'ri-eye-off-line' : 'ri-eye-line'"
+            ></i>
+          </div>
+          <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)">
+            <small *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</small>
+          </div>
+        </div> -->
+
+      <!-- <a href="#">Forget Password</a><br> -->
       <input
         class="submit"
         type="submit"
         value="Login"
         [disabled]="loginForm.invalid"
-        [ngStyle]="loginForm.invalid ? {'background-color': 'rgb(230, 96, 0, 37%)'} : null"
-        (click)="navigateToAuth()"
-      >
+        [ngStyle]="
+          loginForm.invalid
+            ? { 'background-color': 'rgb(230, 96, 0, 37%)' }
+            : null
+        "
+        (click)="showAuth()"
+      />
     </form>
   </div>
-  
 
-<div>
-    <p>Don't have a Wave account yet? <a (click)="navigateToRegister()">Create account</a></p>
+  <div>
+    <p>
+      Don't have a Wave account yet?
+      <a (click)="navigateToRegister()">Create account</a>
+    </p>
     <p class="sign-with">or Sign in with</p>
     <div class="icons">
-        <img src="assets/facebook-logo-facebook-icon-transparent-free-png.webp" width="50" height="50">
-        <img src="assets/Google_Icons-09-512.webp" width="50" height="50">
-        <img src="assets/png-transparent-apple-logo-logo-apple-icon-information-apple-logo-logo-monochrome-black-thumbnail.png" width="30" height="30">
+      <img
+        src="assets/facebook-logo-facebook-icon-transparent-free-png.webp"
+        width="50"
+        height="50"
+      />
+      <img src="assets/Google_Icons-09-512.webp" width="50" height="50" />
+      <img
+        src="assets/png-transparent-apple-logo-logo-apple-icon-information-apple-logo-logo-monochrome-black-thumbnail.png"
+        width="30"
+        height="30"
+      />
     </div>
+  </div>
 </div>
-
-
-</div>
+}

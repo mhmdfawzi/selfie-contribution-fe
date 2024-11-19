@@ -35,20 +35,23 @@ export class RegisterComponent implements OnInit {
     const input = this.phoneInput.nativeElement as HTMLInputElement;
     intlTelInput(input, {
       initialCountry: "auto",
-      geoIpLookup: (callback: (countryCode: string) => void) => {
-        fetch("https://ipinfo.io?token=<your_ipinfo_token>")
-          .then((response) => response.json())
-          .then((data) => {
-            const countryCode = data.country ? data.country : "us";
-            callback(countryCode);
-          })
-          .catch(() => {
-            callback("us");
-          });
+      geoIpLookup: (getFlag: (countryCode: string) => void) => {
+
+        getFlag("ae")
+
+        // fetch("https://ipinfo.io?token=<your_ipinfo_token>")
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     const countryCode = data.country ? data.country : "us";
+        //     callback(countryCode);
+        //   })
+        //   .catch(() => {
+        //     callback("eg");
+        //   });
       },
       loadUtilsOnInit: true,
       separateDialCode: true,
-      preferredCountries: ["us", "gb", "ae"],
+      // preferredCountries: ["us", "gb", "ae"],
     } as any); 
   }
 

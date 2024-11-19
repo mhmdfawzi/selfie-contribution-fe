@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { BurjKhalifaShapeComponent } from '../burj-khalifa-shape/burj-khalifa-shape.component';
 import { ImageService } from '../image.service';
 import { DubaiPoliceComponent } from '../dubai-police/dubai-police.component';
-import { AlphaMaskComponent } from '../alpha-mask/alpha-mask.component';
+// import { AlphaMaskComponent } from '../alpha-mask/alpha-mask.component';
 
 @Component({
   selector: 'app-collage',
@@ -15,7 +15,7 @@ import { AlphaMaskComponent } from '../alpha-mask/alpha-mask.component';
     CommonModule,
     BurjKhalifaShapeComponent,
     DubaiPoliceComponent,
-    AlphaMaskComponent,
+    // AlphaMaskComponent,
   ],
 })
 export class CollageComponent implements OnInit {
