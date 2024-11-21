@@ -18,9 +18,15 @@ export class NickNameComponent {
 
   constructor(private router: Router){}
 
-  navToBurjEvent(){
+  // navToBurjEvent(){
+  //   if(this.form.valid){
+  //     this.router.navigate(['collage'])
+  //   }
+  // }
+
+  navToUploadPhotoView(){
     if(this.form.valid){
-      this.router.navigate(['collage'])
+      this.router.navigate(['photo_upload'])
     }
   }
 

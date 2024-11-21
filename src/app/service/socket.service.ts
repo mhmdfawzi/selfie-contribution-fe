@@ -73,4 +73,21 @@ export class WebSocketService {
     const api = `${this.api}users/otp/${number}`;
     return this.http.get<any>(api);
   }
+
+  uploadImage(
+    file: File,
+    eventId: string = '1',
+    lat?: number,
+    long?: number
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    let api = `${this.api}images/upload?eventId=${eventId}`;
+    if (lat !== undefined && long !== undefined) {
+      api += `&lat=${lat}&long=${long}`;
+    }
+
+    return this.http.post(api, formData);
+  }
 }

@@ -7,6 +7,7 @@ import { NickNameComponent } from './shared/components/nick-name/nick-name.compo
 import { HomeComponent } from './shared/components/home/home.component';
 import { IntroComponent } from './shared/components/intro/intro.component';
 import { SuccessComponent } from './shared/components/success/success.component';
+import { UploadPhotoComponent } from './shared/components/upload-photo/upload-photo.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LogInComponent },
   { path: 'upload', component: UploadComponent },
+  { path: 'photo_upload', component: UploadPhotoComponent },
   { path: 'collage', component: CollageComponent },
   { path: 'success', component: SuccessComponent },
 ];
