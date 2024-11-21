@@ -1,10 +1,11 @@
 // src/app/components/auth/auth.component.ts
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService, NgxSpinnerModule } from 'ngx-spinner';
 import { DataService } from '../../services/data.service';
+import { WebSocketService } from 'src/app/service/socket.service';
 
 @Component({
   selector: 'app-auth',
@@ -14,15 +15,18 @@ import { DataService } from '../../services/data.service';
   styleUrls: ['./auth.component.css'],
 })
 export class AuthComponent {
-  code: string[] = ['', '', '', '', ''];
-  boxes = Array<string>(5);
+  code: string[] = ['', '', '', ''];
+  boxes = Array<string>(4);
 
   showError: boolean = false;
+  @Input() userPhoneNumber!: string;
+  receivedOTP!: string;
 
   constructor(
     private router: Router,
     private dataService: DataService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private socketService: WebSocketService
   ) {}
 
   get isButtonDisabled() {
@@ -52,19 +56,16 @@ export class AuthComponent {
     }
   }
 
+  navigateToNicknameSetter() {
+    this.router.navigateByUrl('/nick-name');
+  }
   validateCodeDigits() {
-    // Show the spinner before making the request
     this.spinner.show();
-    
-    this.dataService.getCodeDigits().subscribe((res) => {
-      // Hide the spinner once the response is received
-      this.spinner.hide();
-      
-      console.log('El valu', this.code);
-      this.showError = false;
 
+    this.dataService.getCodeDigits().subscribe((res) => {
+      this.spinner.hide();
+      this.showError = false;
       if (res) {
-        // this.navigateToCollage();
         this.navigateToNicknameSetter();
       } else {
         this.showError = true;
@@ -72,10 +73,31 @@ export class AuthComponent {
     });
   }
 
-  // navigateToCollage() {
-  //   this.router.navigateByUrl('/collage');
-  // }
-  navigateToNicknameSetter(){
-    this.router.navigateByUrl('/nick-name');
+  navigateToCollage() {
+    this.verifyOTP();
+  }
+
+  verifyOTP() {
+    this.socketService
+      .verifyOtp({
+        mobileNumber: this.userPhoneNumber,
+        otp: this.receivedOTP.toString(),
+      })
+      .subscribe({
+        next: () => {
+          console.log('Success otp');
+          this.router.navigateByUrl('/collage');
+        },
+        error: () => {
+          console.log('wrong otp');
+        },
+      });
+  }
+
+  getOTP() {
+    this.socketService.tempGetOTP(this.userPhoneNumber).subscribe((res) => {
+      console.log('El res of OTP', res);
+      this.receivedOTP = res;
+    });
   }
 }

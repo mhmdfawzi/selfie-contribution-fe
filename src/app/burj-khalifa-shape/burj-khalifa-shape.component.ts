@@ -10,7 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { gsap } from 'gsap';
-import { SocketService } from '../service/socket.service';
+import { WebSocketService } from '../service/socket.service';
 
 // Define the Tile interface
 interface Tile {
@@ -32,7 +32,7 @@ export class BurjKhalifaShapeComponent implements OnInit, OnDestroy {
   @Input() tileCount: number = 100; // Total number of tiles (input)
   @Input() defaultTileColor: string = '#ffffff'; // Background color for tiles with no image
 
-  constructor(private socketService: SocketService) {}
+  constructor(private socketService: WebSocketService) {}
 
   grid: Tile[] = []; // Grid array containing Tile objects
   gridColumns: number = 0;
@@ -49,20 +49,20 @@ export class BurjKhalifaShapeComponent implements OnInit, OnDestroy {
     this.generateGridFromImage();
     // this.initializeFireworks();
 
-    this.socketService.listen('newTile').subscribe((data) => {
-      console.log('New tile received:', data);
-      // Handle the data received from the server (e.g., animate or update the grid)
-    });
+    // this.socketService.listen('newTile').subscribe((data) => {
+    //   console.log('New tile received:', data);
+    //   // Handle the data received from the server (e.g., animate or update the grid)
+    // });
   }
 
   ngOnDestroy(): void {
     // Cleanup socket connection when the component is destroyed
-    this.socketService.disconnect();
+    // this.socketService.disconnect();
   }
 
   sendTileData() {
-    const tileData = { tileId: 1, image: 'image-url.jpg' };
-    this.socketService.emit('addTile', tileData); // Emitting an event to the server
+    // const tileData = { tileId: 1, image: 'image-url.jpg' };
+    // this.socketService.emit('addTile', tileData); // Emitting an event to the server
   }
 
   initializeFireworks() {
