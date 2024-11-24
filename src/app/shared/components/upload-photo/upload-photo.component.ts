@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { WebSocketService } from 'src/app/service/socket.service';
+import { WebSocketService } from 'src/app/shared/services/socket.service';
 
 @Component({
   selector: 'app-upload-photo',

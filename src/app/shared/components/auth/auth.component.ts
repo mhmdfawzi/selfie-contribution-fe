@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService, NgxSpinnerModule } from 'ngx-spinner';
 import { DataService } from '../../services/data.service';
-import { WebSocketService } from 'src/app/service/socket.service';
+import { WebSocketService } from 'src/app/shared/services/socket.service';
 
 @Component({
   selector: 'app-auth',
@@ -59,23 +59,24 @@ export class AuthComponent {
   navigateToNicknameSetter() {
     this.router.navigateByUrl('/nick-name');
   }
-  validateCodeDigits() {
-    this.spinner.show();
 
-    this.dataService.getCodeDigits().subscribe((res) => {
-      this.spinner.hide();
-      this.showError = false;
-      if (res) {
-        this.navigateToNicknameSetter();
-      } else {
-        this.showError = true;
-      }
-    });
-  }
+  // validateCodeDigits() {
+  //   this.spinner.show();
 
-  navigateToCollage() {
-    this.verifyOTP();
-  }
+  //   this.dataService.getCodeDigits().subscribe((res) => {
+  //     this.spinner.hide();
+  //     this.showError = false;
+  //     if (res) {
+  //       this.navigateToNicknameSetter();
+  //     } else {
+  //       this.showError = true;
+  //     }
+  //   });
+  // }
+
+  // navigateToCollage() {
+  //   this.verifyOTP();
+  // }
 
   verifyOTP() {
     this.socketService
@@ -84,9 +85,10 @@ export class AuthComponent {
         otp: this.receivedOTP.toString(),
       })
       .subscribe({
-        next: () => {
+        next: (res) => {
           console.log('Success otp');
-          this.router.navigateByUrl('/collage');
+          this.dataService.setToken(res.token)
+          this.router.navigateByUrl('/nick-name');
         },
         error: () => {
           console.log('wrong otp');

@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthComponent } from '../auth/auth.component';
-import { WebSocketService } from 'src/app/service/socket.service';
+import { WebSocketService } from 'src/app/shared/services/socket.service';
 
 @Component({
   selector: 'app-log-in',

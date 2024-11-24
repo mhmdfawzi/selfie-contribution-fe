@@ -2,7 +2,7 @@
 <div class="flipper" #flipper>
   <div class="front" #frontImage>
     <div class="control">
-      <svg stroke="#fff" stroke-linecap="round">
+      <!-- <svg stroke="#fff" stroke-linecap="round">
         <g class="stage">
           <rect width="100%" height="100%" fill="rgba(0,0,0,0)" stroke="none" />
         </g>
@@ -29,7 +29,7 @@
             Auto
           </text>
         </g>
-      </svg>
+      </svg> -->
 
       <div
         class="collage-container"
@@ -40,7 +40,7 @@
         }"
       >
         <div
-          *ngFor="let tile of grid; let i = index; trackBy: trackByFn"
+          *ngFor="let tile of grid; let i = index"
           [ngStyle]="{
             'width.px': tileSize,
             'height.px': tileSize,
@@ -52,14 +52,14 @@
         ></div>
       </div>
     </div>
-    <input
+    <!-- <input
       #fileInput
       type="file"
       style="display: none"
       (change)="onFileSelected($event)"
-    />
+    /> -->
 
-    <button (click)="animateNextTile()">Animate Next Tile</button>
+    <!-- <button (click)="animateNextTile()">Animate Next Tile</button> -->
   </div>
   <div class="back" #backImage>
     <div class="dubai-police-container">

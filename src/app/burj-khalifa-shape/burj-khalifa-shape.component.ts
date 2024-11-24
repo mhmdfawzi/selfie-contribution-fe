@@ -10,7 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { gsap } from 'gsap';
-import { WebSocketService } from '../service/socket.service';
+import { WebSocketService } from '../shared/services/socket.service';
 
 // Define the Tile interface
 interface Tile {
@@ -40,7 +40,7 @@ export class BurjKhalifaShapeComponent implements OnInit, OnDestroy {
   tileSize: number = 0; // Dynamically calculated tile size
   greyColor: string = '#F2F2F2';
 
-  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef; // Reference to the file input
+  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
 
   auto = false;
   m = { x: 0, y: 0 };
@@ -382,6 +382,47 @@ export class BurjKhalifaShapeComponent implements OnInit, OnDestroy {
       reader.readAsDataURL(file); // Convert the selected file to a data URL
     }
   }
+
+  onImageUrlReceived(imageUrl: string): void {
+    if (imageUrl) {
+      // Find the last grey tile (without an image and is visible) starting from the bottom
+      const nextTile = [...this.grid]
+        .reverse()
+        .find((tile) => !tile.image && tile.visible);
+  
+      if (nextTile) {
+        nextTile.image = imageUrl; // Set the image URL for the tile
+  
+        // Animate this tile to its position
+        const tileIndex = this.grid.indexOf(nextTile);
+        const tileElement = document.querySelector(
+          `.collage-tile:nth-child(${tileIndex + 1})`
+        ) as HTMLElement;
+  
+        const startX =
+          Math.random() * window.innerWidth * (Math.random() > 0.5 ? -1 : 1);
+        const startY =
+          Math.random() * window.innerHeight * (Math.random() > 0.5 ? -1 : 1);
+  
+        gsap.set(tileElement, {
+          x: startX,
+          y: startY,
+          opacity: 0,
+          scale: 18,
+        });
+  
+        gsap.to(tileElement, {
+          x: 0,
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 2,
+          ease: 'power2.out',
+        });
+      }
+    }
+  }
+  
 
   // Helper function to get a random color
   getRandomColor() {
