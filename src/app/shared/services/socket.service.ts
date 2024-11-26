@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { HttpClient } from '@angular/common/http';
 import { io, Socket } from 'socket.io-client';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,7 @@ export class WebSocketService {
   // private socket!: WebSocket;
   private messagesSubject: Subject<any> = new Subject<any>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   connect(): void {
     const token = localStorage.getItem('burj_token');
@@ -34,6 +34,16 @@ export class WebSocketService {
       auth: {
         token: `Bearer ${token}`,
       },
+    });
+
+    // Listen for connection error events
+    this.socket.on('connect_error', (error: any) => {
+      console.error('Socket connection error:', error);
+
+      if (error.message.includes('400')) {
+        // Navigate to /login if the error is due to invalid token
+        this.router.navigate(['/login']);
+      }
     });
 
     this.socket.on('connect', () => {
@@ -52,8 +62,8 @@ export class WebSocketService {
     });
   }
 
-   // Join a specific event
-   joinEvent(channelId: number): void {
+  // Join a specific event
+  joinEvent(channelId: number): void {
     this.socket.emit('joinEvent', channelId);
   }
 
@@ -81,7 +91,6 @@ export class WebSocketService {
   emit(event: string, data: any): void {
     this.socket.emit(event, data);
   }
-
 
   // HTTP method to send OTP
   sendOtp(mobileNumber: string): Observable<any> {
