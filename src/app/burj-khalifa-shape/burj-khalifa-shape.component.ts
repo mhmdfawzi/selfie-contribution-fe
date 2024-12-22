@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { gsap } from 'gsap';
 import { WebSocketService } from '../shared/services/socket.service';
+import { ParticleCanvasComponent } from '../shared/components/fireworks/fireworks';
 
 // Define the Tile interface
 interface Tile {
@@ -22,7 +23,7 @@ interface Tile {
 @Component({
   selector: 'app-burj-khalifa-shape',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ParticleCanvasComponent],
   templateUrl: './burj-khalifa-shape.component.html',
   styleUrls: ['./burj-khalifa-shape.component.css'],
 })

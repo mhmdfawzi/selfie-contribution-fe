@@ -9,15 +9,11 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class WebSocketService {
-  // private socket$: WebSocketSubject<any> | null = null;
-
   private socket!: Socket;
   private serverUrl: string =
-    'https://selfie-contribution-bk-production.up.railway.app/realtime'; // Your WebSocket URL
+    'https://selfie-contribution-bk-production.up.railway.app/realtime'; // WebSocket URL
 
   private api: string = environment.apiUrl;
-
-  // private socket!: WebSocket;
   private messagesSubject: Subject<any> = new Subject<any>();
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -94,38 +90,47 @@ export class WebSocketService {
 
   // HTTP method to send OTP
   sendOtp(mobileNumber: string): Observable<any> {
-    const api = `${this.api}users/login`;
+    const api = `${this.api}/users/login`;
     // This sends an HTTP POST request to send OTP to the mobile number
     return this.http.post<any>(api, { mobileNumber });
   }
 
   // HTTP method to verify OTP
   verifyOtp(verificationForm: { mobileNumber: string; otp: string }) {
-    const api = `${this.api}users/verify-otp`;
+    const api = `${this.api}/users/verify-otp`;
     return this.http.post<any>(api, verificationForm); // POST the OTP for verification
   }
 
   // Temporary method to get OTP based on the number
   tempGetOTP(number: string) {
-    const api = `${this.api}users/otp/${number}`;
+    const api = `${this.api}/users/otp/${number}`;
     return this.http.get<any>(api); // GET request to fetch OTP
   }
 
   // Upload an image to the server
   uploadImage(
-    file: File,
-    eventId: string = '1',
-    lat?: number,
-    long?: number
-  ): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', file);
+    // file: File,
+    // eventId: string = '1',
+    // lat?: number,
+    // long?: number
+  ): any  { //Observable<any>
+    
+    // const formData = new FormData();
+    // formData.append('file', file);
 
-    let api = `${this.api}images/upload?eventId=${eventId}`;
-    if (lat !== undefined && long !== undefined) {
-      api += `&lat=${lat}&long=${long}`;
-    }
+    // let api = `${this.api}/images/upload?eventId=${eventId}`;
+    // if (lat !== undefined && long !== undefined) {
+    //   api += `&lat=${lat}&long=${long}`;
+    // }
 
-    return this.http.post(api, formData); // HTTP POST for image upload
+    // return this.http.post(api, formData); // HTTP POST for image upload
+
+    this.sendPhotoToEvent(1, 'ay url test')
+  }
+
+  getExistingImages(): Observable<{url: string, filename: string}[]>{
+
+    const api = `${this.api}/images/event/1`
+    return this.http.get<{url: string, filename: string}[]>(api)
   }
 }

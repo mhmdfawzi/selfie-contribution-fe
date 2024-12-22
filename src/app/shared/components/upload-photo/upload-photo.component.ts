@@ -77,17 +77,24 @@ export class UploadPhotoComponent {
 
   navToBurjEvent() {
     if (this.isFileValid && this.uploadedFile) {
-      this.socketService
-        .uploadImage(this.uploadedFile)
-        .subscribe({
-          next: (response) => {
-            console.log('Upload successful:', response);
-            this.router.navigate(['collage']);
-          },
-          error: (err) => {
-            console.error('Upload failed:', err);
-          }
-        });
+      // this.socketService
+      //   .uploadImage(this.uploadedFile)
+      //   .subscribe({
+      //     next: (response) => {
+      //       console.log('Upload successful:', response);
+      //       this.router.navigate(['collage']);
+      //       this.socketService.sendPhotoToEvent();
+      //     },
+      //     error: (err) => {
+      //       console.error('Upload failed:', err);
+      //     }
+      //   });
+      this.socketService.connect();
+      console.log("Connected");
+      this.socketService.uploadImage();
+      console.log("Uploaded img");
+      this.router.navigate(['collage']);
+      console.log("Navigated");
     }
   }
 }
