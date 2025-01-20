@@ -87,8 +87,12 @@ export class AuthComponent {
       .subscribe({
         next: (res) => {
           console.log('Success otp');
-          this.dataService.setToken(res.token)
-          this.router.navigateByUrl('/nick-name');
+          this.dataService.setToken(res.token);
+          if (this.dataService.getName()) {
+            this.router.navigateByUrl('/photo_upload');
+          } else {
+            this.router.navigateByUrl('/nick-name');
+          }
         },
         error: () => {
           console.log('wrong otp');

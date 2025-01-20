@@ -5,10 +5,17 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class DataService {
-
-  setToken(token: string){
-    localStorage.setItem('burj_token', token)
+  setToken(token: string) {
+    localStorage.setItem('burj_token', token);
   }
 
+  setName(name: string) {
+    localStorage.setItem('burj_contributor', name);
+  }
 
+  getName(): string | null {
+    return localStorage.getItem('burj_contributor')
+      ? localStorage.getItem('burj_contributor')
+      : null;
+  }
 }

@@ -1,4 +1,5 @@
 export const environment = {
-    production: false,
-    apiUrl: 'https://selfie-contribution-bk-production.up.railway.app',
-}
+  production: false,
+  apiUrl_: 'https://selfie-contribution-bk-production.up.railway.app',
+  apiUrl: 'http://localhost:3000',
+};

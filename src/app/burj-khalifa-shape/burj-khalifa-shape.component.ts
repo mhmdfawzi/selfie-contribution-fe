@@ -12,6 +12,7 @@ import {
 import { gsap } from 'gsap';
 import { WebSocketService } from '../shared/services/socket.service';
 import { ParticleCanvasComponent } from '../shared/components/fireworks/fireworks';
+import { SafeUrlPipe } from '../pipes/safe-url.pipe';
 
 // Define the Tile interface
 interface Tile {
@@ -23,7 +24,7 @@ interface Tile {
 @Component({
   selector: 'app-burj-khalifa-shape',
   standalone: true,
-  imports: [CommonModule, ParticleCanvasComponent],
+  imports: [CommonModule, ParticleCanvasComponent, SafeUrlPipe],
   templateUrl: './burj-khalifa-shape.component.html',
   styleUrls: ['./burj-khalifa-shape.component.css'],
 })
@@ -49,11 +50,6 @@ export class BurjKhalifaShapeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.generateGridFromImage();
     // this.initializeFireworks();
-
-    // this.socketService.listen('newTile').subscribe((data) => {
-    //   console.log('New tile received:', data);
-    //   // Handle the data received from the server (e.g., animate or update the grid)
-    // });
   }
 
   ngOnDestroy(): void {
@@ -390,28 +386,28 @@ export class BurjKhalifaShapeComponent implements OnInit, OnDestroy {
       const nextTile = [...this.grid]
         .reverse()
         .find((tile) => !tile.image && tile.visible);
-  
+
       if (nextTile) {
         nextTile.image = imageUrl; // Set the image URL for the tile
-  
+
         // Animate this tile to its position
         const tileIndex = this.grid.indexOf(nextTile);
         const tileElement = document.querySelector(
           `.collage-tile:nth-child(${tileIndex + 1})`
         ) as HTMLElement;
-  
+
         const startX =
           Math.random() * window.innerWidth * (Math.random() > 0.5 ? -1 : 1);
         const startY =
           Math.random() * window.innerHeight * (Math.random() > 0.5 ? -1 : 1);
-  
+
         gsap.set(tileElement, {
           x: startX,
           y: startY,
           opacity: 0,
           scale: 18,
         });
-  
+
         gsap.to(tileElement, {
           x: 0,
           y: 0,
@@ -423,7 +419,6 @@ export class BurjKhalifaShapeComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
 
   // Helper function to get a random color
   getRandomColor() {

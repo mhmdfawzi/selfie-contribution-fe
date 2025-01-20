@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../../environment/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { io, Socket } from 'socket.io-client';
 import { Router } from '@angular/router';
 
@@ -10,8 +10,7 @@ import { Router } from '@angular/router';
 })
 export class WebSocketService {
   private socket!: Socket;
-  private serverUrl: string =
-    'https://selfie-contribution-bk-production.up.railway.app/realtime'; // WebSocket URL
+  private serverUrl: string = `${environment.apiUrl}/realtime`; // WebSocket URL
 
   private api: string = environment.apiUrl;
   private messagesSubject: Subject<any> = new Subject<any>();
@@ -52,10 +51,10 @@ export class WebSocketService {
       this.messagesSubject.next({ type: 'contribute', data });
     });
 
-    this.socket.on('sendPhotoToEvent', (data) => {
-      console.log('Photo from server:', data);
-      this.messagesSubject.next({ type: 'sendPhotoToEvent', data });
-    });
+    // this.socket.on('sendPhotoToEvent', (data) => {
+    //   console.log('Photo from server:', data);
+    //   this.messagesSubject.next({ type: 'sendPhotoToEvent', data });
+    // });
   }
 
   // Join a specific event
@@ -107,30 +106,44 @@ export class WebSocketService {
     return this.http.get<any>(api); // GET request to fetch OTP
   }
 
-  // Upload an image to the server
-  uploadImage(
-    // file: File,
-    // eventId: string = '1',
-    // lat?: number,
-    // long?: number
-  ): any  { //Observable<any>
-    
-    // const formData = new FormData();
-    // formData.append('file', file);
+  updateUserProfile(userInfo: { name: string; nationality: string }) {
+    const api = `${this.api}/users/update-profile`;
+    const token = localStorage.getItem('burj_token');
+    if (!token) {
+      console.error('Token not found in local storage!');
+      return;
+    }
 
-    // let api = `${this.api}/images/upload?eventId=${eventId}`;
-    // if (lat !== undefined && long !== undefined) {
-    //   api += `&lat=${lat}&long=${long}`;
-    // }
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Replace `Bearer` with the required scheme if different
+    });
 
-    // return this.http.post(api, formData); // HTTP POST for image upload
-
-    this.sendPhotoToEvent(1, 'ay url test')
+    return this.http.put<any>(api, userInfo, { headers }); // GET request to fetch OTP
   }
 
-  getExistingImages(): Observable<{url: string, filename: string}[]>{
+  // Upload an image to the server
+  uploadImage(
+    file: File,
+    eventId: string = '1',
+    lat?: number,
+    long?: number
+  ): any {
+    //Observable<any>
 
-    const api = `${this.api}/images/event/1`
-    return this.http.get<{url: string, filename: string}[]>(api)
+    const formData = new FormData();
+    formData.append('file', file);
+
+    let api = `${this.api}/images/upload?eventId=${eventId}`;
+    if (lat !== undefined && long !== undefined) {
+      api += `&lat=${lat}&long=${long}`;
+    }
+
+    // this.sendPhotoToEvent(1, 'ay url test');
+    return this.http.post(api, formData); // HTTP POST for image upload
+  }
+
+  getExistingImages(): Observable<{ url: string; filename: string }[]> {
+    const api = `${this.api}/images/event/1`;
+    return this.http.get<{ url: string; filename: string }[]>(api);
   }
 }

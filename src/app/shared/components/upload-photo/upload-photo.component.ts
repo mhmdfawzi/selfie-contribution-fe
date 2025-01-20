@@ -20,7 +20,10 @@ export class UploadPhotoComponent {
   previewUrl: string | null = null;
   uploadedFile: File | null = null;
 
-  constructor(private router: Router, private socketService: WebSocketService) {}
+  constructor(
+    private router: Router,
+    private socketService: WebSocketService
+  ) {}
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -77,24 +80,22 @@ export class UploadPhotoComponent {
 
   navToBurjEvent() {
     if (this.isFileValid && this.uploadedFile) {
-      // this.socketService
-      //   .uploadImage(this.uploadedFile)
-      //   .subscribe({
-      //     next: (response) => {
-      //       console.log('Upload successful:', response);
-      //       this.router.navigate(['collage']);
-      //       this.socketService.sendPhotoToEvent();
-      //     },
-      //     error: (err) => {
-      //       console.error('Upload failed:', err);
-      //     }
-      //   });
-      this.socketService.connect();
-      console.log("Connected");
-      this.socketService.uploadImage();
-      console.log("Uploaded img");
-      this.router.navigate(['collage']);
-      console.log("Navigated");
+      this.socketService.uploadImage(this.uploadedFile).subscribe({
+        next: (response: any) => {
+          console.log('Upload successful:', response);
+          this.router.navigate(['collage']);
+          // this.socketService.sendPhotoToEvent();
+        },
+        error: (err: any) => {
+          console.error('Upload failed:', err);
+        },
+      });
+      // this.socketService.connect();
+      console.log('Connected');
+      // this.socketService.uploadImage();
+      console.log('Uploaded img');
+      // this.router.navigate(['collage']);
+      console.log('Navigated');
     }
   }
 }

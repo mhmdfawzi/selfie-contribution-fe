@@ -4,7 +4,14 @@
   align-items: center;
   justify-content: center;
   margin: auto;
-  max-width: 500px;
+  max-width: 430px;
+
+  justify-content: center; /* Vertically center the content */
+}
+.wrapper {
+  margin: 10px 0; /* Add spacing between the wrappers */
+  width: 100%; /* Adjust width if needed */
+  text-align: center; /* Center the content inside the wrapper */
 }
 
 input {
@@ -46,14 +53,15 @@ small {
   font-weight: 700;
 }
 
-input, .submit {
-  width: 100%;
+input,
+.submit {
+  width: 80%;
   padding: 12px;
   margin-bottom: 20px;
 }
 
 .submit {
-  width: 100%;
+  width: 80%;
   padding: 10px;
   border-radius: var(--border-radius-primary);
   background-color: rgb(230, 96, 0);
@@ -73,60 +81,19 @@ input, .submit {
   width: auto;
   margin: auto;
 }
-
-.email {
-  width: 100%; 
-  padding: 12px; 
-  border: 1px solid #ccc; 
-  border-radius: var(--border-radius-primary);
-  font-size: 16px; 
-  box-sizing: border-box; 
-  margin-bottom: 20px; 
-}
-
-.password-container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  position: relative;
-}
-
-.password-container input {
-  flex: 1;
-  padding: 12px;
-  padding-right: 40px;
-  border: 1px solid #ccc;
-  border-radius: var(--border-radius-primary);
-  box-sizing: border-box;
-}
-
-.toggle-password {
-  cursor: pointer;
-  position: absolute;
-  right: 10px;
-  color: #999;
-  transition: color 0.3s;
-}
-
-.toggle-password:hover {
-  color: var(--primary-color);
-}
-
 .input-field {
-  width: 100%; 
-  padding: 12px; 
+  width: 80%;
+  padding: 12px;
   border: 1px solid #ccc;
   border-radius: var(--border-radius-primary);
   font-size: 16px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   margin-bottom: 20px;
 }
 
-
-
 @media (min-width: 200px) and (max-width: 1090px) {
   .container {
-    max-width: 100%; 
+    max-width: 430px;
   }
 
   .images-client {
@@ -135,18 +102,9 @@ input, .submit {
     max-width: 100%;
   }
 
-  .email {
-    width: 90%; 
-    font-size: 15px; 
-    padding: 10px; 
-    border: 1px solid #00000082;
-    border-radius: var(--border-radius-primary);
-    margin-bottom: 15px; 
-  }
-
   .input-field {
-    font-size: 15px; 
-    padding: 10px; 
+    font-size: 15px;
+    padding: 10px;
     margin-bottom: 15px;
   }
 
@@ -161,27 +119,27 @@ input, .submit {
   }
 
   .icons img {
-    width: 40px; 
-    height: 40px; 
+    width: 40px;
+    height: 40px;
   }
 
   .sign-with {
-    font-size: 14px; 
-    text-align: center; 
+    font-size: 14px;
+    text-align: center;
   }
 
   p {
-    font-size: 16px; 
-    text-align: center; 
+    font-size: 16px;
+    text-align: center;
   }
 
   .submit {
-    width: 100%;
-    font-size: 18px; 
+    width: 80%;
+    font-size: 18px;
   }
 
   .sign-with {
-    font-size: 14px; 
+    font-size: 14px;
     margin: auto;
     margin-bottom: 15px;
   }
@@ -195,12 +153,12 @@ input, .submit {
   }
 
   .password-container input {
-    padding: 10px; 
-    font-size: 15px; 
+    padding: 10px;
+    font-size: 15px;
   }
 
   .toggle-password {
-    right: 10px; 
+    right: 10px;
     font-size: 18px;
     margin-left: -15px;
   }
@@ -210,55 +168,77 @@ input, .submit {
   }
 }
 
-
 @media (width: 1024px) and (height: 1366px) {
   .container {
-    padding: 40px; 
-    max-width: 700px; 
+    padding: 40px;
+    max-width: 430px;
   }
 
   .description p {
-    font-size: 20px; 
+    font-size: 20px;
   }
 
   .input-field,
   .email,
   .submit,
   .password-container input {
-    width: 100%; 
-    font-size: 20px; 
-    padding: 18px; 
+    width: 100%;
+    font-size: 20px;
+    padding: 18px;
     height: 65px;
   }
 
   .submit {
-    padding: 20px; 
-    font-size: 24px; 
+    padding: 20px;
+    font-size: 24px;
   }
 
   .images-client {
-    width: 85%; 
-    border-radius: 10%; 
+    width: 85%;
+    border-radius: 10%;
   }
 
   .icons img {
-    width: 40px; 
+    width: 40px;
     height: 40px;
   }
 
   .toggle-password {
-    font-size: 24px; 
+    font-size: 24px;
   }
 
   h1 {
-    font-size: 36px; 
+    font-size: 36px;
   }
 
   label {
-    font-size: 18px; 
+    font-size: 18px;
   }
 
   .sign-with {
-    font-size: 18px; 
+    font-size: 18px;
   }
 }
+
+/* phone validator */
+
+/* .error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+} */

@@ -5,6 +5,7 @@ import { ImageService } from '../image.service';
 import { DubaiPoliceComponent } from '../dubai-police/dubai-police.component';
 import { WebSocketService } from '../shared/services/socket.service';
 import { environment } from '../../environment/environment';
+import { DomSanitizer } from '@angular/platform-browser';
 // import { AlphaMaskComponent } from '../alpha-mask/alpha-mask.component';
 
 @Component({
@@ -23,7 +24,7 @@ export class CollageComponent implements OnInit {
   // selfieURLs: string[] = [];
 
   @ViewChild('burjComp', { static: false }) Burj!: BurjKhalifaShapeComponent;
-  
+
   tilesCount: number = 0;
   collageShape: string = 'assets/burj-khalifa-800h.png';
   messages: { type: string; data: any }[] = [];
@@ -31,7 +32,8 @@ export class CollageComponent implements OnInit {
   private api: string = environment.apiUrl;
 
   constructor(
-    private socketService: WebSocketService
+    private socketService: WebSocketService,
+    private sanitizer: DomSanitizer
   ) {}
   ngOnInit(): void {
     // this.selfieURLs = Array(500).fill('assets/selfie.jpg');
@@ -45,42 +47,99 @@ export class CollageComponent implements OnInit {
     //   }
     // })
 
-    this.socketService.getExistingImages().subscribe((res) => {
-      const imagePromises = res.map((img) => this.preloadImage("https://images.unsplash.com/photo-1695927621677-ec96e048dce2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2VsZmllJTIwbWFufGVufDB8fDB8fHww"));
-      Promise.all(imagePromises).then((loadedUrls) => {
-        console.log('All images loaded:', loadedUrls);
-        for (const url of loadedUrls) {
-          this.Burj.onImageUrlReceived(url);
-        }
+    setTimeout(() => {
+      this.socketService.getExistingImages().subscribe((res) => {
+        const imagePromises = res.map(
+          (img) => `${environment.apiUrl}${img.url}`
+        );
+        Promise.all(imagePromises).then((loadedUrls) => {
+          console.log('All images loaded:', loadedUrls);
+          for (const url of loadedUrls) {
+            this.Burj.onImageUrlReceived(url);
+          }
+        });
       });
-    });
+    }, 2000);
 
-
-    // Listen for WebSocket messages
-    this.socketService.listen().subscribe((message) => {
-      console.log("Very first message:", message)
-      if (message.type === 'contribute') {
-        console.log('New contribution:', message.data);
-        this.messages.push({ type: 'contribute', data: message.data });
-        this.Burj.onImageUrlReceived(message.data)
-      } else if (message.type === 'sendPhotoToEvent') {
-        console.log('Photo from server:', message.data);
-        this.messages.push({ type: 'sendPhotoToEvent', data: message.data });
+    this.socketService.listen().subscribe((msg) => {
+      console.log(msg);
+      if (msg.type == 'contribute') {
+        this.Burj.onImageUrlReceived(`${environment.apiUrl}/${msg.data}`);
       }
     });
+
+    // Listen for WebSocket messages
+    // this.socketService.listen().subscribe((message) => {
+    //   console.log('Very first message:', message);
+    //   if (message.type === 'contribute') {
+    //     console.log('New contribution:', message.data);
+    //     this.messages.push({ type: 'contribute', data: message.data });
+    //     this.Burj.onImageUrlReceived(message.data);
+    //   } else if (message.type === 'sendPhotoToEvent') {
+    //     console.log('Photo from server:', message.data);
+    //     this.messages.push({ type: 'sendPhotoToEvent', data: message.data });
+    //   }
+    // });
 
     this.tilesCount = 3000;
   }
 
   private preloadImage(url: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => resolve(url);
-      img.onerror = (err) => reject(err);
+      console.log('Attempting to fetch URL:', url);
+
+      fetch(url, { mode: 'cors' })
+        .then((response) => {
+          if (!response.ok) {
+            console.error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const img = new Image();
+          const sanitizedUrl = url;
+          console.log('Sanitized URL:', sanitizedUrl);
+          img.src = sanitizedUrl;
+          img.crossOrigin = 'anonymous';
+          img.onload = () => {
+            console.log(`Image successfully loaded: ${url}`);
+            resolve(url);
+          };
+          img.onerror = (err) => {
+            console.error('Image failed to load:', err);
+            reject(err);
+          };
+        })
+        .catch((err) => {
+          console.error('Failed to fetch image:', err);
+          reject(err);
+        });
     });
   }
-  
+
+  // private preloadImage(url: string): Promise<string> {
+  //   return new Promise((resolve, reject) => {
+  //     fetch(url, { mode: 'cors' }) // Ensure CORS is enabled
+  //       .then((response) => {
+  //         if (!response.ok) {
+  //           throw new Error(`HTTP error! status: ${response.status}`);
+  //         }
+
+  //         // Proceed to load the image
+  //         const img = new Image();
+  //         const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(
+  //           url
+  //         ) as string;
+  //         img.src = sanitizedUrl;
+  //         img.onload = () => resolve(url); // Resolve the promise
+  //         img.onerror = (err) => reject(err); // Reject the promise
+  //       })
+  //       .catch((err) => {
+  //         console.error('Failed to fetch image:', err);
+  //         reject(err); // Reject the promise in case of fetch failure
+  //       });
+  //   });
+  // }
+
   // sendPhoto(link: string): void {
   //   if (link.trim()) {
   //     this.socketService.sendPhotoToEvent(1, link);
@@ -88,4 +147,3 @@ export class CollageComponent implements OnInit {
   //   }
   // }
 }
-

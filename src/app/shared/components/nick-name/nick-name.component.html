@@ -1,23 +1,78 @@
 <div class="container">
   <div class="flex-wrapper">
+    <!-- Description Section -->
     <div class="description">
       <h1 class="main-title">Add Nickname</h1>
       <p class="sub-text">
-        This nickname is used for interaction between you and the application and
-        for communication
+        This nickname is used for interaction between you and the application
+        and for communication.
       </p>
     </div>
-  
+
+    <!-- Form Section -->
     <form [formGroup]="form">
-      <div class="nick-name">
-        <label>Nick name</label>
-        <input formControlName="nickname" type="text" placeholder="EX:name" />
+      <!-- Nickname Input -->
+      <div class="nick-name form-group">
+        <label for="nickname">Nickname</label>
+        <input
+          id="nickname"
+          formControlName="nickname"
+          type="text"
+          placeholder="EX: name"
+        />
+        <div
+          *ngIf="
+            form.get('nickname')?.hasError('required') &&
+            form.get('nickname')?.touched
+          "
+          class="error"
+        >
+          Nickname is required.
+        </div>
       </div>
-  
-      <div>
-        <button (click)="navToUploadPhotoView()" [disabled]="form.invalid">Save</button>
+
+      <!-- Nationality Input -->
+      <div class="form-group">
+        <label for="nationality">Nationality</label>
+        <input
+          id="nationality"
+          type="text"
+          formControlName="nationality"
+          placeholder="Search nationalities"
+          (input)="onInputChange($event)"
+        />
+        <ul
+          *ngIf="filteredNationalities && filteredNationalities.length > 0"
+          class="dropdown"
+        >
+          <li
+            *ngFor="let nationality of filteredNationalities"
+            (click)="selectNationality(nationality)"
+          >
+            {{ nationality }}
+          </li>
+        </ul>
+        <div
+          *ngIf="
+            form.get('nationality')?.hasError('required') &&
+            form.get('nationality')?.touched
+          "
+          class="error"
+        >
+          Nationality is required.
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <div class="form-actions">
+        <button
+          type="button"
+          (click)="navToUploadPhotoView()"
+          [disabled]="form.invalid"
+        >
+          Save
+        </button>
       </div>
     </form>
   </div>
-
 </div>
