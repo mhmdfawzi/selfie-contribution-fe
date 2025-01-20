@@ -1,0 +1,82 @@
+.container {
+  margin: auto;
+  max-width: 500px;
+  padding: 20px;
+}
+
+.tabs {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .tab-button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+    background-color: white;
+  
+  }
+
+  .active-tab {
+    text-decoration-line: underline;
+    text-decoration-color: aqua;
+
+  }
+
+  .inactive-tab {
+    color: rgba(0, 0, 0, 0.21);
+  }
+  
+  .tab-content {
+    padding: 10px;
+  }
+
+  img {
+    width: 200px;
+    height: 200px;
+    border-radius: 20%;
+    margin: 10%;
+  }
+
+  .tab1 {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+    padding: 10px 0;
+    z-index: 1000; 
+  }
+  
+  .footer i,
+  .footer button i {
+    font-size: 24px; 
+    color: #000; 
+  }
+
+  .footer i.active,
+.footer button i.active {
+  color: orange;
+}
+  
+  .footer button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }

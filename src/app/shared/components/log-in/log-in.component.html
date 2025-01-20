@@ -1,0 +1,50 @@
+@if (isPhoneAccepted) {
+<div id="auth-view">
+  <app-auth [userPhoneNumber]="userMobileNumber!"></app-auth>
+</div>
+}@else {
+<div>
+  <img class="images-client" src="assets/cover.png" />
+</div>
+
+<div class="container">
+  <form #f="ngForm" [formGroup]="phoneForm">
+    <div class="wrapper">
+      <ngx-intl-tel-input
+        [cssClass]="'custom'"
+        [enableAutoCountrySelect]="true"
+        [enablePlaceholder]="true"
+        [searchCountryFlag]="true"
+        [searchCountryField]="[
+          SearchCountryField.Iso2,
+          SearchCountryField.Name
+        ]"
+        [selectFirstCountry]="false"
+        [selectedCountryISO]="CountryISO.Egypt"
+        [maxLength]="15"
+        [phoneValidation]="true"
+        [separateDialCode]="separateDialCode"
+        [numberFormat]="PhoneNumberFormat.National"
+        [onlyCountries]="onlyCountries"
+        name="phone"
+        formControlName="phone"
+      >
+      </ngx-intl-tel-input>
+    </div>
+    <div class="wrapper">
+      <input
+        class="submit"
+        type="button"
+        value="Login"
+        [disabled]="phoneForm.invalid"
+        [ngStyle]="
+          phoneForm.invalid
+            ? { 'background-color': 'rgb(230, 96, 0, 37%)' }
+            : null
+        "
+        (click)="showAuth()"
+      />
+    </div>
+  </form>
+</div>
+}

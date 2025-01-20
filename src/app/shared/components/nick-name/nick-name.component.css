@@ -1,0 +1,94 @@
+.container {
+  margin: auto;
+  max-width: 500px;
+}
+
+button {
+  margin-top: 100%;
+  width: 75%;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: rgb(230, 96, 0);
+  color: white;
+  border: none;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+button:disabled {
+  background-color: rgba(230, 96, 0, 0.37);
+}
+
+.description {
+  width: 100%;
+}
+
+.nick-name {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  width: 85%;
+  padding: 10px;
+  border-radius: 4px;
+  border-color: #00000021;
+}
+
+@media (min-width: 200px) and (max-width: 1090px) {
+  .container {
+    padding: 10px;
+  }
+
+  input {
+    width: 93%;
+    margin-top: 10px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background: #fff;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 1000;
+}
+
+.dropdown li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown li:hover {
+  background: #f0f0f0;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

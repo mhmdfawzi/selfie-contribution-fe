@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="flex-wrapper">
+    <div class="description">
+      <h1 class="main-title">Upload Photo</h1>
+      <p class="sub-text">
+        Upload a photo in order to participate in the event and help build the Burj!
+      </p>
+    </div>
+
+    <div class="upload-wrapper">
+      <label for="file-upload" class="upload-label">Choose a file:</label>
+      <input
+        type="file"
+        id="file-upload"
+        accept=".jpg,.jpeg,.png"
+        (change)="onFileSelected($event)"
+      />
+      <div class="file-info" *ngIf="uploadedFileName">
+        <p>File Name: {{ uploadedFileName }}</p>
+        <p>File Size: {{ uploadedFileSize }}</p>
+      </div>
+      <div *ngIf="previewUrl" class="image-preview">
+        <p>Image Preview:</p>
+        <img [src]="previewUrl" alt="Uploaded Image" class="preview-image" />
+      </div>
+      <div class="file-error" *ngIf="fileError">
+        <small>{{ fileError }}</small>
+      </div>
+    </div>
+
+    <button (click)="navToBurjEvent()" [disabled]="!isFileValid">Save</button>
+  </div>
+</div>

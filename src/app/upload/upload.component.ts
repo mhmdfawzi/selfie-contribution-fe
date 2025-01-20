@@ -35,6 +35,7 @@ export class UploadComponent {
   }
 
   navigateToCollage() {
+    console.clear();
     this.router.navigate(['/collage']);
   }
 }

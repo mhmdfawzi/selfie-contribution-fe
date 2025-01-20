@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="paragraph">
+      <h1>Create an account</h1>
+      <p>Enter your email & password. if you forget it, then you have to do forget password</p>
+  </div>
+
+  <div>
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+      <div class="fill-inputs">
+          <input formControlName="textInput" placeholder="Full name" />
+          <small *ngIf="myForm.get('textInput')?.touched && myForm.get('textInput')?.errors?.['required']">
+              Text input is required.
+          </small>
+      </div>
+      <div class="fill-inputs">
+          <input type="tel" formControlName="phone" #phone />
+          <small *ngIf="myForm.get('phone')?.touched && myForm.get('phone')?.errors?.['required']">
+              Number input is required.
+          </small>
+          <small *ngIf="myForm.get('phone')?.touched && myForm.get('phone')?.errors?.['pattern']">
+              Please enter a valid number.
+          </small>
+      </div>
+      <div class="fill-inputs">
+          <input formControlName="emailInput" placeholder="Email" />
+          <small *ngIf="myForm.get('emailInput')?.touched && myForm.get('emailInput')?.errors?.['required']">
+              Email is required.
+          </small>
+          <small *ngIf="myForm.get('emailInput')?.touched && myForm.get('emailInput')?.errors?.['email']">
+              Invalid email format.
+          </small>
+      </div>
+      <div class="fill-inputs">
+          <input formControlName="passwordInput" type="password" placeholder="Password" />
+          <small *ngIf="myForm.get('passwordInput')?.touched && myForm.get('passwordInput')?.errors?.['required']">
+              Password is required.
+          </small>
+          <small *ngIf="myForm.get('passwordInput')?.touched && myForm.get('passwordInput')?.errors?.['passwordComplexity']">
+            Password must contain uppercase, lowercase, and a number.
+          </small>
+      </div>
+      <div class="fill-inputs">
+          <input formControlName="confirmPasswordInput" type="password" placeholder="Confirm Password" />
+          <small *ngIf="myForm.get('confirmPasswordInput')?.touched && myForm.get('confirmPasswordInput')?.errors?.['required']">
+              Confirm password is required.
+          </small>
+          <small *ngIf="myForm.errors?.['passwordMismatch']">
+              Passwords must match.
+          </small>
+      </div>
+      <button class="register-button" [disabled]="myForm.invalid" 
+          [ngStyle]="{'background-color': myForm.invalid ? 'rgba(230, 96, 0, 0.33)' : 'rgb(230, 96, 0)'}" type="submit">
+          Continue
+      </button>
+  </form>
+  
+  </div> 
+</div>

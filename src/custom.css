@@ -1,0 +1,17 @@
+
+.flex-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 96vh;
+}
+
+.main-title{
+  font-size: 2rem;
+  font-weight: bold;
+  color: black;
+}
+
+.sub-text{
+  color: var(--grey-color);
+  font-size: var(--size-two);
+}
