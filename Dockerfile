@@ -1,5 +1,5 @@
 # Use a Node.js version compatible with Angular
-FROM node:18-alpine
+FROM node:18-alpine AS build
 
 # Set working directory
 WORKDIR /app
@@ -13,9 +13,17 @@ RUN npm ci --legacy-peer-deps
 # Copy application files
 COPY . .
 
-# Build the application
+# Build the Angular application
 RUN npm run build
 
-# Expose port and start the app
-EXPOSE 4200
-CMD ["npm", "start"]
+# Use NGINX to serve the built Angular files
+FROM nginx:alpine
+
+# Copy built files to NGINX's default public directory
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Expose port 80 for the application
+EXPOSE 80
+
+# Start NGINX server
+CMD ["nginx", "-g", "daemon off;"]
