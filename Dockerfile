@@ -39,7 +39,7 @@ FROM caddy:latest AS serve
 WORKDIR /app
 
 # Copy the build output from the previous stage
-COPY --from=build /app/dist/app_name/browser /app
+COPY --from=build /app/dist/selfie-contribution-fe/browser /app
 
 # Check if the Caddyfile exists before copying
 RUN test -f Caddyfile && cp Caddyfile /app/Caddyfile || echo "No Caddyfile found, skipping"
