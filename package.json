@@ -28,7 +28,6 @@
     "intl-tel-input": "^17.0.21",
     "libphonenumber-js": "^1.11.18",
     "ngx-bootstrap": "^12.0.0",
-    "ngx-intl-tel-input": "^3.2.0",
     "ngx-intl-tel-input-gg": "^1.0.12",
     "ngx-spinner": "^17.0.0",
     "remixicon": "^4.5.0",
@@ -62,8 +61,9 @@
   },
   "overrides": {
     "ngx-intl-tel-input": {
-      "@angular/common": "^17.0.0",
-      "@angular/core": "^17.0.0"
+      "@angular/forms": "^17.0.0",
+      "@angular/core": "^17.0.0",
+      "@angular/common": "^17.0.0"
     }
   }
 }
