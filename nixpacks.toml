@@ -8,7 +8,7 @@
 # setup phase where we add any needed packages
 [phases]
 setup = "npm install"
-build = "npm run build --prod"
+build = "npm run build"
 
 [phases.setup]
     nixPkgs = ['...', 'jq'] # jq is needed to parse the outputPath from our angular.json file
@@ -19,6 +19,9 @@ build = "npm run build --prod"
     cmds = [
         'jq -r "[.projects[] | .architect.build.options.outputPath][0]" angular.json > angular_output_path' # save the resulting value into a file so that we can load the file into a variable in the final image
     ]
+
+[static]
+path = "dist/selfie-contribution-fe/browser"
 
 # download caddy from nix
 [phases.caddy]
