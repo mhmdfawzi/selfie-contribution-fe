@@ -6,19 +6,12 @@
     NPM_CONFIG_FUND = 'false' # the fund notification is also pretty useless in a production environment
 
 # setup phase where we add any needed packages
-[phases]
-setup = "npm install"
-build = "npm run build"
-
 [phases.setup]
-    nixPkgs = ['...', 'jq'] # jq is needed to parse the outputPath from our angular.json file
+commands = ["npm install"]
 
-# get the output path from our angular.json file
-[phases.output]
-    dependsOn = ['setup']
-    cmds = [
-        'jq -r "[.projects[] | .architect.build.options.outputPath][0]" angular.json > angular_output_path' # save the resulting value into a file so that we can load the file into a variable in the final image
-    ]
+[phases.build]
+commands = ["npm run build"]
+
 
 [static]
 path = "dist/selfie-contribution-fe/browser"
