@@ -6,6 +6,10 @@
     NPM_CONFIG_FUND = 'false' # the fund notification is also pretty useless in a production environment
 
 # setup phase where we add any needed packages
+[phases]
+setup = "npm install"
+build = "npm run build --prod"
+
 [phases.setup]
     nixPkgs = ['...', 'jq'] # jq is needed to parse the outputPath from our angular.json file
 
